@@ -1,0 +1,79 @@
+{
+  "generated_at": "2026-06-26T09:28:51.273749+00:00",
+  "sources": {
+    "clinicaltrials": {
+      "api_version": "2.0.5",
+      "data_timestamp": "2026-06-25T09:00:05",
+      "counts_by_condition": {
+        "cancer": 52353,
+        "lung cancer": 5635,
+        "breast cancer": 7577,
+        "prostate cancer": 3418,
+        "melanoma": 1720,
+        "lymphoma": 4795,
+        "multiple myeloma": 1806,
+        "leukemia": 4307
+      },
+      "sample_has_protocol_section": true
+    },
+    "pubmed": {
+      "oncology_rwe": 55839,
+      "oncology_hta": 15421,
+      "oncology_recent": 61797
+    },
+    "openfda": {
+      "faers_by_drug": {
+        "pembrolizumab": 100432,
+        "nivolumab": 94833,
+        "osimertinib": 30472,
+        "trastuzumab": 86493,
+        "lenalidomide": 414395
+      },
+      "faers_total": 726625,
+      "labels_by_drug": {
+        "pembrolizumab": 2,
+        "nivolumab": 3,
+        "osimertinib": 1,
+        "trastuzumab": 10,
+        "lenalidomide": 21
+      },
+      "labels_total": 37
+    },
+    "nice": {
+      "xlsx_url": "https://a.storyblok.com/f/243782/x/39a98b770a/ta-cancer-recommendations.xlsx",
+      "snapshot_sha256": "414392d51eb2fd59a774e5f5b37bd186e80c880b2c7ef3aa3f3edfd2ed880d04",
+      "total_rows": 649,
+      "columns": {
+        "fiscal_year": 2,
+        "recommendation": 7
+      },
+      "by_bucket": {
+        "pre": 594,
+        "straddle": 47,
+        "post": 8
+      },
+      "recent_fiscal_years": {
+        "2024": 50,
+        "2025": 47,
+        "2026": 8
+      },
+      "categorisation_breakdown": {
+        "recommended": 262,
+        "other": 9,
+        "not_recommended": 96,
+        "optimised": 125,
+        "non_submission": 96,
+        "cdf": 61
+      },
+      "restricted_recent": {
+        "straddle": 29,
+        "post": 3
+      },
+      "note": "fiscal-year granularity; 'post' is cleanly post-cutoff, 'straddle' (FY containing the cutoff) needs per-TA guidance dates to split"
+    }
+  },
+  "verdict": {
+    "arm_a_clean": "unknown",
+    "reason": "NICE parse failed"
+  }
+}

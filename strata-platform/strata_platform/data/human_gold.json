@@ -1,0 +1,62 @@
+{
+  "TA1127": [
+    "trial_design_bias"
+  ],
+  "TA1129": [
+    "trial_design_bias"
+  ],
+  "TA1130": [],
+  "TA1133": [
+    "comparator",
+    "icer_uncertainty",
+    "surrogate_endpoint_immaturity",
+    "trial_design_bias"
+  ],
+  "TA1136": [
+    "icer_uncertainty"
+  ],
+  "TA1139": [
+    "trial_design_bias"
+  ],
+  "TA1147": [
+    "icer_uncertainty",
+    "surrogate_endpoint_immaturity"
+  ],
+  "TA1149": [
+    "surrogate_endpoint_immaturity",
+    "trial_design_bias"
+  ],
+  "TA1150": [
+    "trial_design_bias"
+  ],
+  "TA1156": [
+    "icer_uncertainty",
+    "surrogate_endpoint_immaturity"
+  ],
+  "TA1138": [
+    "icer_uncertainty",
+    "trial_design_bias"
+  ],
+  "TA1153": [
+    "trial_design_bias"
+  ],
+  "TA1145": [],
+  "TA1146": [
+    "generalizability",
+    "icer_uncertainty",
+    "surrogate_endpoint_immaturity"
+  ],
+  "TA1119": [
+    "icer_uncertainty",
+    "trial_design_bias"
+  ],
+  "TA1040": [
+    "trial_design_bias"
+  ],
+  "TA1001": [
+    "trial_design_bias"
+  ],
+  "TA1116": [
+    "trial_design_bias"
+  ]
+}

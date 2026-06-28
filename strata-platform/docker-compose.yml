@@ -1,0 +1,47 @@
+# Local stack mirroring the Azure topology: Postgres(pgvector) + API + worker.
+# The API also runs jobs in-process when no queue is configured, so the worker is
+# optional locally; it's here to mirror prod and exercise the worker path.
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: strata
+      POSTGRES_PASSWORD: strata
+      POSTGRES_DB: strata
+    ports: ["5432:5432"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U strata"]
+      interval: 5s
+      retries: 10
+    volumes: ["pgdata:/var/lib/postgresql/data"]
+
+  api:
+    build: .
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql+asyncpg://strata:strata@db:5432/strata
+    ports: ["8000:8000"]
+    depends_on:
+      db:
+        condition: service_healthy
+
+  worker:
+    build: .
+    command: ["python", "-m", "strata_platform.jobs.worker"]
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql+asyncpg://strata:strata@db:5432/strata
+    depends_on:
+      db:
+        condition: service_healthy
+    profiles: ["queue"]   # only starts when a queue is configured (docker compose --profile queue up)
+
+  frontend:
+    build: ./frontend
+    environment:
+      NEXT_PUBLIC_API_BASE: http://localhost:8000
+    ports: ["3000:3000"]
+    depends_on: [api]
+
+volumes:
+  pgdata:

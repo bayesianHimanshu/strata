@@ -1,0 +1,357 @@
+{
+  "TA964": [
+    "budget_impact",
+    "icer_uncertainty",
+    "trial_design_bias"
+  ],
+  "TA967": [
+    "budget_impact",
+    "icer_uncertainty",
+    "trial_design_bias"
+  ],
+  "TA970": [
+    "budget_impact",
+    "icer_uncertainty",
+    "trial_design_bias"
+  ],
+  "TA974": [
+    "budget_impact",
+    "comparator",
+    "icer_uncertainty",
+    "trial_design_bias"
+  ],
+  "TA975": [
+    "budget_impact",
+    "icer_uncertainty",
+    "trial_design_bias"
+  ],
+  "TA977": [
+    "budget_impact",
+    "icer_uncertainty",
+    "trial_design_bias"
+  ],
+  "TA979": [
+    "budget_impact",
+    "icer_uncertainty",
+    "trial_design_bias"
+  ],
+  "TA983": [
+    "icer_uncertainty"
+  ],
+  "TA992": [
+    "icer_uncertainty"
+  ],
+  "TA995": [
+    "icer_uncertainty"
+  ],
+  "TA997": [
+    "budget_impact",
+    "icer_uncertainty",
+    "trial_design_bias"
+  ],
+  "TA1001": [
+    "budget_impact",
+    "icer_uncertainty",
+    "trial_design_bias"
+  ],
+  "TA1005": [
+    "budget_impact",
+    "trial_design_bias"
+  ],
+  "TA1007": [
+    "budget_impact",
+    "comparator",
+    "trial_design_bias"
+  ],
+  "TA1008": [
+    "budget_impact",
+    "icer_uncertainty",
+    "trial_design_bias"
+  ],
+  "TA1011": [
+    "icer_uncertainty",
+    "missing_pro"
+  ],
+  "TA1012": [
+    "budget_impact",
+    "icer_uncertainty",
+    "trial_design_bias"
+  ],
+  "TA1013": [
+    "budget_impact",
+    "icer_uncertainty",
+    "trial_design_bias"
+  ],
+  "TA1014": [
+    "budget_impact",
+    "icer_uncertainty"
+  ],
+  "TA1015": [
+    "budget_impact",
+    "trial_design_bias"
+  ],
+  "TA1017": [
+    "budget_impact",
+    "icer_uncertainty",
+    "trial_design_bias"
+  ],
+  "TA1018": [
+    "budget_impact",
+    "icer_uncertainty"
+  ],
+  "TA1021": [
+    "budget_impact",
+    "trial_design_bias"
+  ],
+  "TA1023": [
+    "generalizability",
+    "icer_uncertainty",
+    "trial_design_bias"
+  ],
+  "TA1027": [
+    "budget_impact",
+    "icer_uncertainty"
+  ],
+  "TA1030": [
+    "budget_impact",
+    "icer_uncertainty",
+    "trial_design_bias"
+  ],
+  "TA1034": [
+    "budget_impact",
+    "icer_uncertainty"
+  ],
+  "TA1036": [
+    "budget_impact",
+    "icer_uncertainty",
+    "trial_design_bias"
+  ],
+  "TA1037": [
+    "budget_impact",
+    "icer_uncertainty"
+  ],
+  "TA1038": [
+    "budget_impact",
+    "icer_uncertainty"
+  ],
+  "TA1039": [
+    "budget_impact",
+    "icer_uncertainty",
+    "trial_design_bias"
+  ],
+  "TA1040": [
+    "budget_impact",
+    "trial_design_bias"
+  ],
+  "TA1041": [
+    "budget_impact",
+    "trial_design_bias"
+  ],
+  "TA1042": [
+    "budget_impact",
+    "icer_uncertainty",
+    "trial_design_bias"
+  ],
+  "TA1043": [
+    "budget_impact",
+    "icer_uncertainty"
+  ],
+  "TA1046": [
+    "icer_uncertainty",
+    "trial_design_bias"
+  ],
+  "TA1048": [
+    "budget_impact",
+    "icer_uncertainty"
+  ],
+  "TA1049": [
+    "budget_impact",
+    "icer_uncertainty"
+  ],
+  "TA1055": [
+    "budget_impact",
+    "icer_uncertainty"
+  ],
+  "TA1059": [
+    "budget_impact",
+    "icer_uncertainty"
+  ],
+  "TA1060": [
+    "budget_impact",
+    "icer_uncertainty"
+  ],
+  "TA1062": [
+    "budget_impact",
+    "comparator",
+    "icer_uncertainty",
+    "trial_design_bias"
+  ],
+  "TA1063": [
+    "budget_impact",
+    "icer_uncertainty",
+    "trial_design_bias"
+  ],
+  "TA1064": [
+    "budget_impact",
+    "icer_uncertainty"
+  ],
+  "TA1065": [
+    "budget_impact",
+    "icer_uncertainty",
+    "trial_design_bias"
+  ],
+  "TA1071": [
+    "budget_impact",
+    "comparator",
+    "trial_design_bias"
+  ],
+  "TA1079": [
+    "budget_impact",
+    "icer_uncertainty",
+    "trial_design_bias"
+  ],
+  "TA1081": [
+    "budget_impact",
+    "icer_uncertainty"
+  ],
+  "TA1086": [
+    "budget_impact",
+    "icer_uncertainty",
+    "trial_design_bias"
+  ],
+  "TA1090": [
+    "budget_impact",
+    "icer_uncertainty",
+    "trial_design_bias"
+  ],
+  "TA1091": [
+    "icer_uncertainty"
+  ],
+  "TA1092": [
+    "budget_impact",
+    "icer_uncertainty"
+  ],
+  "TA1097": [
+    "budget_impact",
+    "icer_uncertainty"
+  ],
+  "TA1098": [
+    "budget_impact",
+    "icer_uncertainty",
+    "trial_design_bias"
+  ],
+  "TA1099": [
+    "budget_impact",
+    "icer_uncertainty"
+  ],
+  "TA1103": [
+    "budget_impact",
+    "icer_uncertainty",
+    "trial_design_bias"
+  ],
+  "TA1109": [
+    "budget_impact",
+    "comparator",
+    "trial_design_bias"
+  ],
+  "TA1110": [
+    "comparator",
+    "trial_design_bias"
+  ],
+  "TA1113": [
+    "budget_impact",
+    "icer_uncertainty",
+    "trial_design_bias"
+  ],
+  "TA1114": [
+    "budget_impact",
+    "icer_uncertainty",
+    "trial_design_bias"
+  ],
+  "TA1116": [
+    "budget_impact",
+    "icer_uncertainty"
+  ],
+  "TA1117": [
+    "budget_impact",
+    "icer_uncertainty"
+  ],
+  "TA1119": [
+    "budget_impact",
+    "trial_design_bias"
+  ],
+  "TA1120": [
+    "budget_impact",
+    "icer_uncertainty"
+  ],
+  "TA1122": [
+    "budget_impact",
+    "icer_uncertainty"
+  ],
+  "TA1127": [
+    "budget_impact",
+    "comparator",
+    "icer_uncertainty",
+    "trial_design_bias"
+  ],
+  "TA1129": [
+    "budget_impact",
+    "icer_uncertainty",
+    "trial_design_bias"
+  ],
+  "TA1130": [
+    "budget_impact",
+    "icer_uncertainty"
+  ],
+  "TA1133": [
+    "budget_impact",
+    "icer_uncertainty",
+    "trial_design_bias"
+  ],
+  "TA1136": [
+    "icer_uncertainty"
+  ],
+  "TA1138": [
+    "budget_impact",
+    "icer_uncertainty"
+  ],
+  "TA1139": [
+    "budget_impact",
+    "icer_uncertainty",
+    "trial_design_bias"
+  ],
+  "TA1145": [
+    "budget_impact",
+    "icer_uncertainty"
+  ],
+  "TA1146": [
+    "budget_impact",
+    "icer_uncertainty"
+  ],
+  "TA1147": [
+    "budget_impact",
+    "icer_uncertainty"
+  ],
+  "TA1149": [
+    "budget_impact",
+    "icer_uncertainty",
+    "trial_design_bias"
+  ],
+  "TA1150": [
+    "budget_impact",
+    "icer_uncertainty",
+    "trial_design_bias"
+  ],
+  "TA1153": [
+    "budget_impact",
+    "icer_uncertainty",
+    "trial_design_bias"
+  ],
+  "TA1156": [
+    "budget_impact",
+    "icer_uncertainty"
+  ],
+  "TA1158": [
+    "icer_uncertainty"
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "generated_at": "2026-06-27T08:42:59.371625+00:00",
+  "model_cutoff": "2026-02-01",
+  "recent_slice_size": 105,
+  "total_fetched": 80,
+  "unavailable": 4,
+  "unavailable_ids": [
+    "TA1108",
+    "TA963",
+    "TA985",
+    "TA987"
+  ],
+  "parse_failed": 21,
+  "parse_failed_ids": [
+    "TA1024",
+    "TA1032",
+    "TA1047",
+    "TA1052",
+    "TA1058",
+    "TA1068",
+    "TA1072",
+    "TA1076",
+    "TA1083",
+    "TA1084",
+    "TA1089",
+    "TA1112",
+    "TA1118",
+    "TA1125",
+    "TA1141",
+    "TA966",
+    "TA968",
+    "TA976",
+    "TA978",
+    "TA980",
+    "TA994"
+  ],
+  "n_pre": 65,
+  "n_post": 15,
+  "n_post_restricted": 9,
+  "n_post_restricted_ids": [
+    "TA1127",
+    "TA1129",
+    "TA1130",
+    "TA1133",
+    "TA1136",
+    "TA1139",
+    "TA1147",
+    "TA1149",
+    "TA1150"
+  ],
+  "gold_category_coverage": {
+    "budget_impact": 70,
+    "comparator": 7,
+    "generalizability": 1,
+    "icer_uncertainty": 70,
+    "missing_pro": 1,
+    "trial_design_bias": 46
+  },
+  "gold_category_coverage_post": {
+    "budget_impact": 13,
+    "comparator": 1,
+    "icer_uncertainty": 15,
+    "trial_design_bias": 7
+  }
+}

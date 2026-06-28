@@ -1,0 +1,23 @@
+[project]
+name = "strata"
+version = "0.1.0"
+description = "Public-data agentic Integrated Evidence Generation (PoV)"
+requires-python = ">=3.11"
+dependencies = ["httpx", "pydantic>=2", "openpyxl", "curl_cffi", "python-dotenv"]
+
+[project.optional-dependencies]
+dev = ["pytest", "ruff"]
+# Production retrieval backend; the pure core/PoV does not require it.
+qdrant = ["qdrant-client"]
+
+[tool.pytest.ini_options]
+# Run from repo root; make the top-level packages importable without installation.
+pythonpath = ["."]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 90
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "N"]
