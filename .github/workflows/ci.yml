@@ -7,7 +7,25 @@ on:
 
 jobs:
   lint-and-test:
+    # Two projects live side by side in this repo, each with its own pyproject.toml
+    # and package layout, so every step below runs inside one of them.
+    name: lint-and-test (${{ matrix.project }})
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - project: strata-platform
+            install: pip install -e ".[dev,azure]"
+            rubric: python -m strata_platform.eval.rubric --check
+          # strata-research is not pip-installed: it relies on pythonpath = ["."]
+          # (see its pyproject.toml), so only its dependencies are installed.
+          - project: strata-research
+            install: pip install -r ../requirements.txt pytest ruff
+            rubric: python -m eval.rubric --check
+    defaults:
+      run:
+        working-directory: ${{ matrix.project }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -16,10 +34,10 @@ jobs:
       - name: Install
         run: |
           python -m pip install --upgrade pip
-          pip install -e ".[dev,azure]"
+          ${{ matrix.install }}
       - name: Ruff
         run: ruff check .
       - name: Rubric is pre-registered (invariant #6)
-        run: python -m strata_platform.eval.rubric --check
+        run: ${{ matrix.rubric }}
       - name: Pytest (no network, no DB)
         run: pytest -q

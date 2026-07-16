@@ -11,16 +11,13 @@ dev = ["pytest", "ruff"]
 qdrant = ["qdrant-client"]
 
 [tool.pytest.ini_options]
-# Run from repo root; make the top-level packages importable without installation.
+# Run from this directory; make the top-level packages importable without installation.
 pythonpath = ["."]
 testpaths = ["tests"]
 
 [tool.ruff]
 line-length = 90
 target-version = "py311"
-# The research packages (core/, sources/, index/, ...) live under strata-research/,
-# not the repo root, so isort needs the extra source root to classify them first-party.
-src = [".", "strata-research"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP", "N"]
