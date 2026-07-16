@@ -1,19 +1,3 @@
-"""Build the Arm A dataset (Phase 2 Task 2.5).
-
-Turns the year-granular NICE cancer index into the real Arm A test set:
-
-  recent slice (NiceTaRef[])  ->  per-TA guidance fetch (exact date + rationale)
-  ->  Decision[] (exact published_date OVERRIDES the index fiscal year)
-  ->  DecisionMiner candidate gold (single-annotator; κ/adjudication is a later step)
-
-Persists decisions.json, candidate_gold.json (gold as VulnCategory.value strings so it
-drops straight into eval.closed_book_probe), and manifest.json — whose headline is
-n_post: the real leakage-clean Arm A size measured from EXACT dates vs MODEL_CUTOFF.
-
-The fetch is resilient (404/withdrawn → skipped, never crashes the batch) and
-idempotent (cached snapshots). Pure assembly otherwise; the network lives only in the
-injected guidance client, so the whole pipeline is testable offline.
-"""
 from __future__ import annotations
 
 import json
@@ -75,7 +59,7 @@ def build_arm_a_dataset(
     for ref in refs:
         # The fetcher is fail-loud on a reachable-but-unparseable page (missing date /
         # empty rationale). The BATCH records that loudly and moves on, so one odd page
-        # never aborts a 100-TA run — the failure surfaces in the manifest, not silently.
+        # never aborts a 100-TA run - the failure surfaces in the manifest, not silently.
         try:
             result = client.fetch(ref.ta_id)
         except ValueError as exc:
@@ -147,7 +131,7 @@ def _manifest(
 
 
 def _gold_to_json(candidate_gold: CandidateGold) -> dict[str, list[str]]:
-    # VulnCategory.value strings, sorted — drops straight into closed_book_probe.
+    # VulnCategory.value strings, sorted - drops straight into closed_book_probe.
     return {ta: sorted(c.value for c in cats) for ta, cats in candidate_gold.items()}
 
 

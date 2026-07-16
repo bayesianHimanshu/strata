@@ -1,9 +1,9 @@
-"""Build the open-book retrieval corpus — per-decision, molecule-scoped, leakage-filtered.
+"""Build the open-book retrieval corpus - per-decision, molecule-scoped, leakage-filtered.
 
 Carries the research rebuild's three fixes: (1) each decision gathers evidence scoped to
 ITS molecule(s) (sources.drug_identity), leakage-date-filtered to decision_date − buffer;
 (2) trials by ``query.intr=molecule AND query.cond=indication`` (not a global sweep), label
-by ``generic_name == molecule`` EXACT (no default-doc fallback — the ORSERDU bug),
+by ``generic_name == molecule`` EXACT (no default-doc fallback - the ORSERDU bug),
 literature via a relaxation chain with retmax SET so PMIDs return; (3) every chunk carries
 drug / doc_type / appraisal_id / doc_date so retrieval is molecule-scoped at query time.
 NICE dossiers gain drug=molecule so same-drug siblings are retrievable while a decision's
@@ -33,15 +33,15 @@ _HTA_CLAUSE = (
     '(cost-effectiveness OR "health technology assessment" OR comparator OR '
     '"overall survival" OR surrogate OR endpoint OR efficacy)'
 )
-_DASH_MAP = {ord(c): "-" for c in "‐‑‒–—―−"}
+_DASH_MAP = {ord(c): "-" for c in "‐‑‒--―−"}
 
 
-# --------------------------------------------------------------------------- #
-# Sibling map (same-molecule prior appraisals — registered, not silent)
-# --------------------------------------------------------------------------- #
+
+# Sibling map (same-molecule prior appraisals - registered, not silent)
+
 
 def compute_sibling_map(decisions: Iterable[Decision]) -> dict[str, frozenset[str]]:
-    """decision_id → other decision_ids sharing the same primary molecule. Keyed via the
+    """decision_id -> other decision_ids sharing the same primary molecule. Keyed via the
     single ``normalize_drug`` so siblings match across different combination strings (the
     raw-string bug that meant siblings never fired)."""
     decisions = list(decisions)
@@ -58,9 +58,9 @@ def compute_sibling_map(decisions: Iterable[Decision]) -> dict[str, frozenset[st
     return out
 
 
-# --------------------------------------------------------------------------- #
-# Query hygiene (NICE free-text → parser-safe terms)
-# --------------------------------------------------------------------------- #
+
+# Query hygiene (NICE free-text -> parser-safe terms)
+
 
 def clean_query(text: str, *, keep_hyphen: bool = True) -> str:
     """Sanitize for the CT.gov Essie / openFDA Lucene parsers (they 400 on en-dashes,
@@ -83,9 +83,9 @@ def pubmed_query(molecule: str, indication: str, *, with_indication: bool) -> st
     return f"({mol}) AND {_HTA_CLAUSE}"
 
 
-# --------------------------------------------------------------------------- #
-# Retrievable doc + pure source→doc converters
-# --------------------------------------------------------------------------- #
+
+# Retrievable doc + pure source->doc converters
+
 
 @dataclass(frozen=True)
 class RetrievableDoc:
@@ -157,7 +157,7 @@ def dossier_to_doc(gr: GuidanceResult, *, drug=None,
         source="nice", source_id=f"{p.ta_id}:guidance",
         url=f"https://www.nice.org.uk/guidance/{p.ta_id.lower()}", title=p.title,
         text=p.rationale_raw, doc_date=p.published_date,
-        doc_type=DocType.ta_final_guidance,  # gold-bearing → boundary excludes its own
+        doc_type=DocType.ta_final_guidance,  # gold-bearing -> boundary excludes its own
         appraisal_id=p.ta_id, drug=drug, indication=indication or p.title,
     )
 
@@ -173,20 +173,20 @@ def doc_to_chunks(doc: RetrievableDoc) -> list[Chunk]:
     )
 
 
-# --------------------------------------------------------------------------- #
-# Fetch (network) — per molecule
-# --------------------------------------------------------------------------- #
+
+# Fetch (network) - per molecule
+
 
 def _warn(decision_id: str, source: str, exc: Exception) -> None:
     print(f"[ingest] {decision_id}: {source} fetch failed "
-          f"({type(exc).__name__}: {exc}) — skipping that source", file=sys.stderr)
+          f"({type(exc).__name__}: {exc}) - skipping that source", file=sys.stderr)
 
 
 def fetch_literature(molecule: str, indication: str, *, pubmed: PubMedClient,
                      max_abstracts: int = 20) -> list[Abstract]:
-    """esearch (retmax SET so PMIDs return) → efetch, via a relaxation chain. The HTA/HEOR
+    """esearch (retmax SET so PMIDs return) -> efetch, via a relaxation chain. The HTA/HEOR
     clause is a soft boost: molecules with no HEOR papers yet fall through to molecule
-    alone (recency-capped) so clinical literature is still gathered. A final 0 warns —
+    alone (recency-capped) so clinical literature is still gathered. A final 0 warns -
     never silently swallowed."""
     mol, ind = clean_query(molecule), clean_query(indication)
     attempts: list[tuple[str, int, str | None]] = []

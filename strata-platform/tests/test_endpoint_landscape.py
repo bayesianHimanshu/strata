@@ -36,7 +36,7 @@ TRIALS = [
 
 
 class FakeReasoner:
-    """Clusters the two PFS variants together and (wrongly) says PFS is NOT a surrogate —
+    """Clusters the two PFS variants together and (wrongly) says PFS is NOT a surrogate -
     the lexicon must override that. Also returns one valid + one invalid implication ref."""
 
     def complete(self, prompt: str, *, system: str | None = None) -> str:

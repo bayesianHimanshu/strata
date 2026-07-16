@@ -1,8 +1,8 @@
-"""structure_aware_prefixed chunking — the platform default (CLAUDE.md / research).
+"""structure_aware_prefixed chunking - the platform default (CLAUDE.md / research).
 
 Chunks respect document structure (headings / paragraph breaks) and each carries a
-breadcrumb prefix ``[source_id › Title › Section]`` so a retrieved fragment still
-announces where it came from — which both improves vector recall (the research found
+breadcrumb prefix ``[source_id > Title > Section]`` so a retrieved fragment still
+announces where it came from - which both improves vector recall (the research found
 ~0.74 with this strategy) and preserves provenance into the chunk text. Long sections are
 windowed with overlap.
 
@@ -58,11 +58,11 @@ def structure_aware_prefixed_chunks(
     overlap: int = 150,
 ) -> list[Chunk]:
     """Chunk ``text`` honoring section structure, prefixing each chunk with a
-    ``[source_id › Title › Section]`` breadcrumb. Windows long sections with overlap."""
+    ``[source_id > Title > Section]`` breadcrumb. Windows long sections with overlap."""
     chunks: list[Chunk] = []
-    crumb_root = " › ".join(p for p in (source_id, doc_title) if p)
+    crumb_root = " > ".join(p for p in (source_id, doc_title) if p)
     for heading, sec_start, sec_end in _segment_sections(text):
-        crumb = " › ".join(p for p in (crumb_root, heading) if p)
+        crumb = " > ".join(p for p in (crumb_root, heading) if p)
         prefix = f"[{crumb}]\n" if crumb else ""
         body = text[sec_start:sec_end]
         if not body.strip():

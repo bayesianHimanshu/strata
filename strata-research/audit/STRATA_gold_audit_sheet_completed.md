@@ -1,6 +1,6 @@
-# STRATA — gold audit sheet
+# STRATA - gold audit sheet
 
-Mark `[x]` where the committee cited the category **as a problem** with the evidence. Leave `[ ]` otherwise. The `(miner: ...)` tag is the automatic extraction — your marks are the human vector we score it against.
+Mark `[x]` where the committee cited the category **as a problem** with the evidence. Leave `[ ]` otherwise. The `(miner: ...)` tag is the automatic extraction - your marks are the human vector we score it against.
 
 ## Calibration diagnostics (read first)
 
@@ -19,7 +19,7 @@ A category firing on a majority of *recommended* decisions is matching boilerpla
 
 ---
 
-## TA1127  —  Nivolumab with chemotherapy for For neoadjuvant treatment then alone for adjuvant treatment of resectable non-small-cell lung cancer
+## TA1127  -  Nivolumab with chemotherapy for For neoadjuvant treatment then alone for adjuvant treatment of resectable non-small-cell lung cancer
 - agency: NICE | date: 2026-02-04 | outcome: optimised
 
 ### Committee rationale
@@ -60,7 +60,7 @@ _(Ticked trial_design_bias for no direct comparison with pembrolizumab and highl
 
 ---
 
-## TA1129  —  Niraparib for For maintenance treatment of advanced ovarian, fallopian tube and peritoneal cancer after response to first-line platinum-based chemotherapy
+## TA1129  -  Niraparib for For maintenance treatment of advanced ovarian, fallopian tube and peritoneal cancer after response to first-line platinum-based chemotherapy
 - agency: NICE | date: 2026-02-12 | outcome: optimised
 
 ### Committee rationale
@@ -99,7 +99,7 @@ _(Ticked trial_design_bias for no direct comparison with olaparib or rucaparib a
 
 ---
 
-## TA1130  —  Talazoparib with enzalutamide for For untreated hormone-relapsed metastatic prostate cancer
+## TA1130  -  Talazoparib with enzalutamide for For untreated hormone-relapsed metastatic prostate cancer
 - agency: NICE | date: 2026-02-11 | outcome: optimised
 
 ### Committee rationale
@@ -139,7 +139,7 @@ _(No genuine evidence concern in the excerpt beyond routine population optimisat
 
 ---
 
-## TA1133  —  Belantamab mafodotin with pomalidomide and dexamethasone for For previously treated multiple myeloma
+## TA1133  -  Belantamab mafodotin with pomalidomide and dexamethasone for For previously treated multiple myeloma
 - agency: NICE | date: 2026-02-18 | outcome: optimised
 
 ### Committee rationale
@@ -186,7 +186,7 @@ _(Comparator ticked because the direct trial comparator was not used in the NHS.
 
 ---
 
-## TA1136  —  Bevacizumab (originator and biosimilars) for For metastatic colorectal cancer
+## TA1136  -  Bevacizumab (originator and biosimilars) for For metastatic colorectal cancer
 - agency: NICE | date: 2026-02-25 | outcome: optimised
 
 ### Committee rationale
@@ -226,7 +226,7 @@ _(Ticked ICER uncertainty for stated economic-model uncertainties from assumptio
 
 ---
 
-## TA1139  —  Epcoritamab for For treating relapsed or refractory follicular lymphoma after 2 or more lines of systemic treatment
+## TA1139  -  Epcoritamab for For treating relapsed or refractory follicular lymphoma after 2 or more lines of systemic treatment
 - agency: NICE | date: 2026-03-11 | outcome: optimised
 
 ### Committee rationale
@@ -264,7 +264,7 @@ _(Ticked trial_design_bias for absence of a direct comparison with usual treatme
 
 ---
 
-## TA1147  —  Vorasidenib for For treating astrocytoma or oligodendroglioma with IDH1 or IDH2 mutations after surgery in people 12 years and over
+## TA1147  -  Vorasidenib for For treating astrocytoma or oligodendroglioma with IDH1 or IDH2 mutations after surgery in people 12 years and over
 - agency: NICE | date: 2026-04-29 | outcome: optimised
 
 ### Committee rationale
@@ -304,7 +304,7 @@ _(Ticked surrogate_endpoint_immaturity because overall survival benefit was unce
 
 ---
 
-## TA1149  —  Belantamab mafodotin with bortezomib and dexamethasone for For previously treated multiple myeloma
+## TA1149  -  Belantamab mafodotin with bortezomib and dexamethasone for For previously treated multiple myeloma
 - agency: NICE | date: 2026-04-30 | outcome: optimised
 
 ### Committee rationale
@@ -345,7 +345,7 @@ _(Ticked surrogate_endpoint_immaturity because survival benefit was uncertain wh
 
 ---
 
-## TA1150  —  Encorafenib with binimetinib for For treating BRAF V600E mutation-positive advanced non-small-cell lung cancer
+## TA1150  -  Encorafenib with binimetinib for For treating BRAF V600E mutation-positive advanced non-small-cell lung cancer
 - agency: NICE | date: 2026-05-06 | outcome: optimised
 
 ### Committee rationale
@@ -383,7 +383,7 @@ _(Ticked trial_design_bias for no direct comparison with dabrafenib plus trameti
 
 ---
 
-## TA1156  —  Osimertinib for For treating EGFR mutation-positive unresectable locally advanced non-small-cell lung cancer after platinum-based chemoradiotherapy
+## TA1156  -  Osimertinib for For treating EGFR mutation-positive unresectable locally advanced non-small-cell lung cancer after platinum-based chemoradiotherapy
 - agency: NICE | date: 2026-05-21 | outcome: recommended
 
 ### Committee rationale
@@ -423,7 +423,7 @@ _(Ticked surrogate_endpoint_immaturity for uncertain overall-survival benefit. T
 
 ---
 
-## TA1138  —  Durvalumab with gemcitabine and cisplatin for For neoadjuvant treatment then alone for adjuvant treatment of muscle-invasive bladder cancer
+## TA1138  -  Durvalumab with gemcitabine and cisplatin for For neoadjuvant treatment then alone for adjuvant treatment of muscle-invasive bladder cancer
 - agency: NICE | date: 2026-03-02 | outcome: recommended
 
 ### Committee rationale
@@ -456,7 +456,7 @@ _(Ticked trial_design_bias for no direct comparison with adjuvant nivolumab. Tic
 
 ---
 
-## TA1153  —  Zanidatamab for For treating HER2-positive advanced biliary tract cancer after 1 or more lines of systemic treatment
+## TA1153  -  Zanidatamab for For treating HER2-positive advanced biliary tract cancer after 1 or more lines of systemic treatment
 - agency: NICE | date: 2026-05-07 | outcome: recommended
 
 ### Committee rationale
@@ -489,7 +489,7 @@ _(Ticked trial_design_bias for no direct comparison with FOLFOX or active sympto
 
 ---
 
-## TA1145  —  Pembrolizumab for For neoadjuvant and adjuvant treatment of resectable locally advanced head and neck squamous cell carcinoma
+## TA1145  -  Pembrolizumab for For neoadjuvant and adjuvant treatment of resectable locally advanced head and neck squamous cell carcinoma
 - agency: NICE | date: 2026-04-21 | outcome: recommended
 
 ### Committee rationale
@@ -527,7 +527,7 @@ _(The excerpt reports progression-free benefit and possible survival benefit but
 
 ---
 
-## TA1146  —  Ripretinib for For treating advanced gastrointestinal stromal tumours after 3 or more kinase inhibitors
+## TA1146  -  Ripretinib for For treating advanced gastrointestinal stromal tumours after 3 or more kinase inhibitors
 - agency: NICE | date: 2026-04-28 | outcome: recommended
 
 ### Committee rationale
@@ -563,7 +563,7 @@ _(Ticked ICER uncertainty for explicit economic-model uncertainties. Ticked gene
 
 ---
 
-## TA1119  —  Venetoclax with obinutuzumab for For untreated chronic lymphocytic leukaemia
+## TA1119  -  Venetoclax with obinutuzumab for For untreated chronic lymphocytic leukaemia
 - agency: NICE | date: 2026-01-07 | outcome: recommended
 
 ### Committee rationale
@@ -600,7 +600,7 @@ _(Ticked trial_design_bias for no direct comparison with venetoclax plus ibrutin
 
 ---
 
-## TA1040  —  Olaparib for For treating BRCA mutation-positive HER2-negative advanced breast cancer after chemotherapy
+## TA1040  -  Olaparib for For treating BRCA mutation-positive HER2-negative advanced breast cancer after chemotherapy
 - agency: NICE | date: 2025-02-12 | outcome: recommended
 
 ### Committee rationale
@@ -636,7 +636,7 @@ _(Ticked trial_design_bias for no direct comparison with talazoparib and relianc
 
 ---
 
-## TA1001  —  Zanubrutinib for Treating marginal zone lymphoma after anti-CD20-based treatment
+## TA1001  -  Zanubrutinib for Treating marginal zone lymphoma after anti-CD20-based treatment
 - agency: NICE | date: 2024-09-04 | outcome: recommended
 
 ### Committee rationale
@@ -665,7 +665,7 @@ _(Ticked trial_design_bias for no direct comparison with standard care and relia
 
 ---
 
-## TA1116  —  Obecabtagene autoleucel for For treating relapsed or refractory B-cell precursor acute lymphoblastic leukaemia
+## TA1116  -  Obecabtagene autoleucel for For treating relapsed or refractory B-cell precursor acute lymphoblastic leukaemia
 - agency: NICE | date: 2025-12-11 | outcome: optimised
 
 ### Committee rationale

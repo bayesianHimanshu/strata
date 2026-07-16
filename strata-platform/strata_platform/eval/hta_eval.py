@@ -4,7 +4,7 @@
 This is the platform's proof: under the leakage boundary, retrieval over public evidence
 converts an over-confident parametric prior into a disciplined, higher-precision predictor.
 The rubric is asserted committed (invariant #6) before any scoring; only retrieval differs
-between the two arms (invariant #8 — same model, same prompt skeleton).
+between the two arms (invariant #8 - same model, same prompt skeleton).
 """
 from __future__ import annotations
 

@@ -51,7 +51,7 @@ def test_both_deltas_share_one_prediction_pass() -> None:
         POST, gold, synth, closed, taxonomy, date(2025, 12, 1),
         buffer_days=90, chunks=CHUNKS, min_eligible=1)
 
-    # predict_open_book called exactly once per post decision — the EB slice is FREE
+    # predict_open_book called exactly once per post decision - the EB slice is FREE
     assert synth.calls == 2
     assert report["micro"]["n_decisions"] == 2
     assert report["micro_evidence_bearing"]["n_decisions"] == 1

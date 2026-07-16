@@ -59,7 +59,7 @@ def test_ingest_dedups_and_embeds_once() -> None:
     store, emb = InMemoryStore(), FakeEmbedder()
     rec = _record("overall survival immature")
     svc = IngestionService(store, emb, {"pubmed": FakeConnector("pubmed", [rec])},
-                           freshness_ttl_hours=0)  # TTL 0 → never short-circuit on freshness
+                           freshness_ttl_hours=0)  # TTL 0 -> never short-circuit on freshness
     s1 = svc.ingest(_query(), connectors=["pubmed"])
     s2 = svc.ingest(_query(), connectors=["pubmed"])      # same record again
     assert s1.total_new == 1
@@ -74,7 +74,7 @@ def test_freshness_ttl_serves_from_cache() -> None:
                            freshness_ttl_hours=24)
     svc.ingest(_query(), connectors=["pubmed"])
     s2 = svc.ingest(_query(), connectors=["pubmed"])
-    assert s2.per_connector["pubmed"]["cached"] == 1     # within TTL → cached, no re-fetch
+    assert s2.per_connector["pubmed"]["cached"] == 1     # within TTL -> cached, no re-fetch
 
 
 def test_progress_callback_fires_per_connector() -> None:
@@ -138,8 +138,8 @@ def test_url_connector_rejects_non_allowlisted_and_private() -> None:
 
 
 def test_nice_connector_index_per_ta_crawl() -> None:
-    """The NICE live-horizon crawl: index xlsx → recent slice → molecule match → per-TA
-    guidance → dossier ContextRecord, all offline (in-memory xlsx + fake guidance)."""
+    """The NICE live-horizon crawl: index xlsx -> recent slice -> molecule match -> per-TA
+    guidance -> dossier ContextRecord, all offline (in-memory xlsx + fake guidance)."""
     import io
 
     import openpyxl

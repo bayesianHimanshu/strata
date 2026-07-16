@@ -1,4 +1,4 @@
-"""Typed contracts — the shared vocabulary of the substrate.
+"""Typed contracts - the shared vocabulary of the substrate.
 
 Pydantic v2 throughout. These types are the interface between the substrate and every
 capability agent; nothing crosses a layer boundary except instances of these.
@@ -18,9 +18,9 @@ def _utcnow() -> datetime:
     return datetime.now(timezone.utc)
 
 
-# --------------------------------------------------------------------------- #
+
 # Provenance & sources
-# --------------------------------------------------------------------------- #
+
 
 class DocType(str, enum.Enum):
     ta_final_guidance = "ta_final_guidance"
@@ -65,9 +65,9 @@ class Chunk(BaseModel):
     embedding: list[float] | None = None
 
 
-# --------------------------------------------------------------------------- #
+
 # Decisions, gold, predictions
-# --------------------------------------------------------------------------- #
+
 
 class VulnCategory(str, enum.Enum):
     comparator = "comparator"
@@ -97,7 +97,7 @@ class GoldItem(BaseModel):
 
 
 class Provenance(BaseModel):
-    """Why a claim is asserted — the audit trail for one prediction."""
+    """Why a claim is asserted - the audit trail for one prediction."""
     chunk_ids: list[str] = Field(default_factory=list)
     source_ids: list[str] = Field(default_factory=list)
     note: str | None = None
@@ -109,9 +109,9 @@ class Vulnerability(BaseModel):
     provenance: Provenance | None = None
 
 
-# --------------------------------------------------------------------------- #
-# Evidence synthesis (the generator capability — grounded brief + dossier prose)
-# --------------------------------------------------------------------------- #
+
+# Evidence synthesis (the generator capability - grounded brief + dossier prose)
+
 
 class EvidenceDimension(str, enum.Enum):
     efficacy = "efficacy"
@@ -124,7 +124,7 @@ class EvidenceDimension(str, enum.Enum):
 
 class SupportLevel(str, enum.Enum):
     supported = "supported"      # cited chunk entails the claim
-    partial = "partial"          # partially supported — kept, flagged
+    partial = "partial"          # partially supported - kept, flagged
     unsupported = "unsupported"  # filtered out of the brief/narrative
 
 
@@ -158,13 +158,13 @@ class SynthesisResult(BaseModel):
     retrieved_chunks: int = 0
 
 
-# --------------------------------------------------------------------------- #
-# Capabilities
-# --------------------------------------------------------------------------- #
 
-# --------------------------------------------------------------------------- #
+# Capabilities
+
+
+
 # Endpoint & comparator landscape (indication-centric; structured-first)
-# --------------------------------------------------------------------------- #
+
 
 class OutcomeKind(str, enum.Enum):
     primary = "primary"
@@ -213,9 +213,9 @@ class LandscapeResult(BaseModel):
     boundary: dict = Field(default_factory=dict)
 
 
-# --------------------------------------------------------------------------- #
-# Safety-signal surveillance (ported from VIGIL — guarded text-to-SQL over FAERS)
-# --------------------------------------------------------------------------- #
+
+# Safety-signal surveillance (ported from VIGIL - guarded text-to-SQL over FAERS)
+
 
 class SignalRow(BaseModel):
     """One disproportionality row from vw_signal_metrics. Lenient (rows come from SQL;
@@ -269,9 +269,9 @@ class CapabilityResult(BaseModel):
     produced_at: datetime = Field(default_factory=_utcnow)
 
 
-# --------------------------------------------------------------------------- #
+
 # Jobs (async orchestration)
-# --------------------------------------------------------------------------- #
+
 
 class JobStatus(str, enum.Enum):
     queued = "queued"

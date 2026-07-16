@@ -1,7 +1,7 @@
 """Provenance: content-addressed snapshots + an append-only ledger.
 
 Every document the platform ingests is snapshotted by SHA-256 (immutable, attributable
-— the ALCOA+ property). Locally this writes to a directory; in Azure it writes to Blob
+- the ALCOA+ property). Locally this writes to a directory; in Azure it writes to Blob
 Storage. The ledger row is persisted via the DB layer (see db.models.SourceRecordRow).
 """
 from __future__ import annotations

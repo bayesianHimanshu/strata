@@ -21,7 +21,7 @@ function Row({ r }: { r: SignalRow }) {
         )}
         {r.event_pt}
         <span className="mono" style={{ marginLeft: 10, color: "var(--ink-soft)" }}>
-          a={r.a} · PRR {r.prr ?? "—"} · ROR {r.ror ?? "—"}
+          a={r.a} · PRR {r.prr ?? "-"} · ROR {r.ror ?? "-"}
         </span>
       </span>
     </div>
@@ -63,7 +63,7 @@ export default function Surveillance() {
           Disproportionality (PRR / ROR) over FAERS via <b>guarded text-to-SQL</b>. Your
           question becomes a read-only SELECT against a single view; a deny-by-default SQL
           guard validates it before it runs; you see the exact SQL that produced every
-          number. PRR/ROR are screening signals — not confirmed causal risks.
+          number. PRR/ROR are screening signals - not confirmed causal risks.
         </p>
       </section>
 
@@ -91,7 +91,7 @@ export default function Surveillance() {
             {running ? "Querying…" : "Run surveillance"}
           </button>
         </div>
-        {running && <div className="note"><span className="spinner">text-to-SQL → guard → execute → summarise…</span></div>}
+        {running && <div className="note"><span className="spinner">text-to-SQL -> guard -> execute -> summarise…</span></div>}
         {err && <div className="note" style={{ color: "var(--excluded)" }}>{err}</div>}
       </div>
 
@@ -115,7 +115,7 @@ export default function Surveillance() {
 
           <div className="boundary">
             <h4>Summary</h4>
-            <p style={{ margin: "0 0 10px" }}>{res.summary || "—"}</p>
+            <p style={{ margin: "0 0 10px" }}>{res.summary || "-"}</p>
             <div className="eyebrow" style={{ marginBottom: 6 }}>Caveats</div>
             {res.caveats.map((c, i) => (
               <div className="kv" key={i}><span className="excluded-tag mono" style={{ fontSize: 12 }}>⚠ {c}</span></div>

@@ -104,7 +104,7 @@ def test_pipeline_manifest_reports_clean_arm_size(tmp_path: Path) -> None:
 
 def test_pipeline_records_parse_failure_without_crashing(tmp_path: Path) -> None:
     # One TA returns a reachable 200 page the parser cannot read (no date). The batch
-    # must record it in the manifest and still process the good TAs — not abort.
+    # must record it in the manifest and still process the good TAs - not abort.
     available = {
         guidance_url("TA1000"): (200, (FIX / "ta1000.html").read_bytes(), "text/html"),
         guidance_url("TA1002"): (200, b"<html><h2>1 Recommendation</h2><p>x</p></html>",

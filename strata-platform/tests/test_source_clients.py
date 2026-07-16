@@ -1,6 +1,6 @@
 """Source-client wiring with an injected HTTP double (no network).
 
-Covers the hard-won fixes at the call site: openFDA 404→0, label-by-generic_name,
+Covers the hard-won fixes at the call site: openFDA 404->0, label-by-generic_name,
 PubMed api_key passthrough, and that every fetch produces a content-addressed
 SourceRecord with the right doc_type.
 """

@@ -6,7 +6,7 @@ xlsx-link finder, the recommendation classifier, the column detectors, and the w
 parser are all pure functions, unit-tested without the network.
 
 This module is the SINGLE parser for the NICE workbook. Date and recommendation columns
-are detected by cell CONTENT, not header name — header-name matching collided (a header
+are detected by cell CONTENT, not header name - header-name matching collided (a header
 like "Date recommendation issued" matches both the date and recommendation patterns).
 """
 from __future__ import annotations
@@ -36,7 +36,7 @@ _REC_PATTERNS: list[tuple[str, str]] = [
     ("recommended", r"recommend"),
 ]
 
-# Outcomes that signal a restricted / negative committee position — the slice that carries
+# Outcomes that signal a restricted / negative committee position - the slice that carries
 # the most evidence-gap signal.
 NEGATIVE_OUTCOMES = frozenset(
     {"not_recommended", "optimised", "non_submission", "only_in_research"}
@@ -57,7 +57,7 @@ def classify_recommendation(text: str) -> str:
 
 
 def looks_like_xlsx(b: bytes) -> bool:
-    """xlsx/xlsm are zip containers — guard against HTML/redirect pages being fed to
+    """xlsx/xlsm are zip containers - guard against HTML/redirect pages being fed to
     openpyxl (the InvalidFileException failure mode)."""
     return b[:4] == b"PK\x03\x04"
 
@@ -73,9 +73,9 @@ def find_xlsx_url(html: str, base: str = NICE_CANCER_PAGE) -> str | None:
     return None
 
 
-# --------------------------------------------------------------------------- #
-# Column detection — value-based, not header-name-based.
-# --------------------------------------------------------------------------- #
+
+# Column detection - value-based, not header-name-based.
+
 
 def _argmax_col(body: list[tuple], scorer) -> int | None:
     if not body:
@@ -110,7 +110,7 @@ def parse_workbook_detailed(xbytes: bytes) -> tuple[list[Decision], dict]:
 
     if not looks_like_xlsx(xbytes):
         raise RuntimeError(
-            "NICE download is not a valid xlsx (got HTML/redirect?) — the link finder "
+            "NICE download is not a valid xlsx (got HTML/redirect?) - the link finder "
             "matched a non-file URL or the page is gated"
         )
 
@@ -157,7 +157,7 @@ def parse_workbook_detailed(xbytes: bytes) -> tuple[list[Decision], dict]:
     c_rec = detect_rec_col(body)
     if c_date is None:
         raise RuntimeError(
-            "could not detect a date column in the NICE workbook — inspect the sheet; "
+            "could not detect a date column in the NICE workbook - inspect the sheet; "
             "leakage stratification cannot proceed without dates"
         )
 
@@ -202,7 +202,7 @@ def parse_workbook_detailed(xbytes: bytes) -> tuple[list[Decision], dict]:
 
     if len(body) and undated > 0.5 * len(body):
         raise RuntimeError(
-            f"{undated}/{len(body)} NICE rows undated — date column (idx {c_date}) "
+            f"{undated}/{len(body)} NICE rows undated - date column (idx {c_date}) "
             f"misdetected or dates not parsing; check normalize_date / cell format"
         )
 
@@ -228,7 +228,7 @@ CLEAN_ARM_MIN_NEGATIVE = 12
 
 def resolve_clean_arm(decisions: list[Decision], cutoff: date) -> dict:
     """Exact pre/post-cutoff stratification once per-TA day-resolution dates exist.
-    Post-cutoff = decision_date strictly after the model cutoff — the leakage-clean test
+    Post-cutoff = decision_date strictly after the model cutoff - the leakage-clean test
     slice; the restricted slice carries the most evidence-gap signal."""
     post = [d for d in decisions if d.decision_date > cutoff]
     pre = [d for d in decisions if d.decision_date <= cutoff]
@@ -253,7 +253,7 @@ def _get_with_retry(
     headers: dict[str, str] | None = None,
 ) -> httpx.Response:
     """GET with exponential backoff on 429 and 5xx. The NICE page 502s intermittently
-    while the asset host stays up — so callers prefer the known asset URL and lean on this
+    while the asset host stays up - so callers prefer the known asset URL and lean on this
     for the transient page fetches."""
     last: httpx.Response | None = None
     for attempt in range(retries):

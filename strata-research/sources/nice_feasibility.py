@@ -1,21 +1,3 @@
-"""STRATA — NICE feasibility summary (fiscal-year based).
-
-FINDING (Phase 0): the NICE cancer-recommendations spreadsheet has NO decision
-date — its only temporal field is "Year of Publication" as a UK fiscal year
-("YYYY/YY", e.g. 2025/26 = Apr 2025–Mar 2026). The recommendation lives in
-"Categorisation (for specific recommendation)". So this sheet is the INDEX of
-cancer TAs (universe + categorisation + rough year), not the decision record.
-
-Consequence: fiscal-year granularity cannot cleanly resolve a mid-year model
-cutoff. With cutoff 2026-02-01, only FY 2026/27+ is cleanly post-cutoff; FY
-2025/26 straddles it and needs day-resolution to split. Exact post-cutoff dates
-(and the committee rationale for the gold set) come from each per-TA guidance page
-(nice.org.uk/guidance/taXXXX → "Published: DD Month YYYY" + the rationale).
-
-MERGE: add parse_fiscal_year / fy_bucket / detect_year_col / nice_feasibility into
-sources/nice.py. Also add the 'only_in_research' pattern to _REC_PATTERNS (NICE's
-"Only in research"/OIR categorisation) and to NEGATIVE_OUTCOMES.
-"""
 from __future__ import annotations
 
 import io

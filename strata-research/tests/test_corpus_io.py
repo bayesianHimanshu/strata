@@ -54,7 +54,7 @@ def test_dossier_to_doc_skips_unavailable() -> None:
 
 def test_clean_query_strips_parser_breaking_chars() -> None:
     # en-dash, parens, colon all 400 the CT.gov/openFDA parsers.
-    assert clean_query("Trifluridine–tipiracil with bevacizumab") == (
+    assert clean_query("Trifluridine-tipiracil with bevacizumab") == (
         "Trifluridine-tipiracil with bevacizumab"
     )
     assert clean_query("Relapsed/refractory myeloma (after 1 line):") == (
@@ -72,7 +72,7 @@ def test_primary_generic_sanitizes_molecule() -> None:
     # split the regimen upstream): no parser-breaking chars reach openFDA.
     assert primary_generic("belantamab mafodotin") == "belantamab mafodotin"
     assert primary_generic("trifluridine") == "trifluridine"
-    assert "–" not in primary_generic("Trifluridine–tipiracil")
+    assert "-" not in primary_generic("Trifluridine-tipiracil")
 
 
 def test_index_doc_is_idempotent_and_skips_undated(tmp_path: Path) -> None:
@@ -148,7 +148,7 @@ def test_build_corpus_filters_dates_and_tags(tmp_path: Path) -> None:
     ct = _FakeCT([TrialRecord(nct_id="NCT9", title="drugx trial",
                               conditions=["NSCLC"], completion_date=date(2025, 1, 1))])
     pub = _FakePub([Abstract(pmid="5", title="late abstract", abstract="ICER",
-                             pub_date=date(2026, 5, 1))])  # POST cutoff → filtered out
+                             pub_date=date(2026, 5, 1))])  # POST cutoff -> filtered out
     fda = _FakeFDA([LabelDoc(brand="Bx", generic="drugx", text="Indicated ...",
                              effective_date=date(2024, 1, 1))])
 

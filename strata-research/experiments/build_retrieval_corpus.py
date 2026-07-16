@@ -1,28 +1,3 @@
-"""Build the Arm A open-book retrieval corpus — per-decision, molecule-scoped.
-
-The first build was one undifferentiated blob: chunks carried no drug, so every
-decision retrieved the same trials/labels (the wrong drug's label even surfaced), and
-the PubMed arm silently returned nothing (esearch was called with retmax=0, so it
-returned a count but no PMIDs). This rebuild fixes all three:
-
-  * each decision gathers evidence scoped to ITS molecule(s) (sources.drug_identity),
-    leakage-date-filtered to decision_date − buffer;
-  * trials by `query.intr=molecule AND query.cond=indication` (not a global sweep);
-  * label by `generic_name == molecule` EXACT — no default/first-doc fallback;
-  * literature by `molecule AND indication AND (HTA terms)` with retmax set so PMIDs
-    actually come back;
-  * every chunk carries drug / indication / decision_id / doc_type / appraisal_id /
-    doc_date, so retrieval is molecule-scoped at query time (the boundary's added
-    predicate). NICE dossiers gain drug=molecule so same-drug siblings are retrievable
-    while a decision's own dossier stays boundary-excluded.
-
-After building, a fail-loud health gate (`assert_corpus_healthy`, reusing
-introspect_retrieval) RAISES on a blob / wrong-drug routing / missing literature, so a
-broken corpus can never silently produce a fake precision/recall delta again.
-
-Pure converters + the gate are unit-tested; the network orchestration is a thin
-wrapper over the typed clients (which carry the Phase 0 / WAF fixes).
-"""
 from __future__ import annotations
 
 import json
@@ -59,11 +34,10 @@ class CorpusHealthError(RuntimeError):
     """Raised by the post-build gate when the corpus is a blob / mistargeted."""
 
 
-# --------------------------------------------------------------------------- #
-# Query hygiene (NICE free-text → parser-safe terms)
-# --------------------------------------------------------------------------- #
+# Query hygiene (NICE free-text -> parser-safe terms)
 
-_DASH_MAP = {ord(c): "-" for c in "‐‑‒–—―−"}
+# Fix this later. Need to be checkede
+_DASH_MAP = {ord(c): "-" for c in "‐‑‒--―−"}
 
 
 def clean_query(text: str, *, keep_hyphen: bool = True) -> str:
@@ -85,13 +59,11 @@ def primary_generic(molecule: str) -> str:
 def pubmed_query(molecule: str, indication: str, *, with_indication: bool) -> str:
     mol = clean_query(molecule)
     if with_indication and indication.strip():
-        return f'({mol}) AND ({clean_query(indication)}) AND {_HTA_CLAUSE}'
-    return f'({mol}) AND {_HTA_CLAUSE}'
+        return f"({mol}) AND ({clean_query(indication)}) AND {_HTA_CLAUSE}"
+    return f"({mol}) AND {_HTA_CLAUSE}"
 
 
-# --------------------------------------------------------------------------- #
-# Retrievable doc + pure source→doc converters (drug/indication/decision_id tagged)
-# --------------------------------------------------------------------------- #
+# Retrievable doc + pure source->doc converters (drug/indication/decision_id tagged)
 
 
 @dataclass(frozen=True)
@@ -123,9 +95,11 @@ def trial_to_doc(
             f"Conditions: {', '.join(t.conditions)}" if t.conditions else "",
             f"Phase: {t.phase}" if t.phase else "",
             f"Status: {t.overall_status}" if t.overall_status else "",
-            ("Primary outcomes: " + "; ".join(t.primary_outcomes))
-            if t.primary_outcomes
-            else "",
+            (
+                ("Primary outcomes: " + "; ".join(t.primary_outcomes))
+                if t.primary_outcomes
+                else ""
+            ),
         )
         if s
     )
@@ -194,7 +168,7 @@ def dossier_to_doc(
         title=p.title,
         text=p.rationale_raw,
         doc_date=p.published_date,
-        doc_type=DocType.ta_final_guidance,  # gold-bearing → boundary excludes its own
+        doc_type=DocType.ta_final_guidance,  # gold-bearing -> boundary excludes its own
         appraisal_id=p.ta_id,
         drug=drug,
         indication=indication or p.title,
@@ -202,9 +176,7 @@ def dossier_to_doc(
     )
 
 
-# --------------------------------------------------------------------------- #
 # Indexing
-# --------------------------------------------------------------------------- #
 
 
 def index_doc(
@@ -247,9 +219,7 @@ def index_doc(
     return len(chunks)
 
 
-# --------------------------------------------------------------------------- #
-# Fetch (network) — per molecule
-# --------------------------------------------------------------------------- #
+# Fetch (network) - per molecule
 
 
 def load_cached_guidance(cache_dir: Path = NICE_CACHE) -> Iterator[GuidanceResult]:
@@ -275,22 +245,29 @@ def fetch_literature(
     max_abstracts: int = 20,
     log=_lit_log,
 ) -> list[Abstract]:
-    """esearch (retmax SET so PMIDs return) → efetch, via a relaxation chain.
+    """esearch (retmax SET so PMIDs return) -> efetch, via a relaxation chain.
 
     The first two attempts are the EXISTING queries (HTA term clause as a hard AND), so
     molecules that already land are untouched and the rebuild stays idempotent for them.
     Newer drugs with no HEOR papers yet (talazoparib, epcoritamab) fall through to the
     new fallbacks: the HTA clause becomes a soft signal (dropped), and finally molecule
-    ALONE, recency-capped (sort=pub_date), so clinical literature — endpoints, survival,
-    trial design, the categories actually in play — is still gathered. The raw esearch
-    count is logged per molecule; a final 0 emits a WARNING (silent 0 hid this twice)."""
+    ALONE, recency-capped (sort=pub_date), so clinical literature - endpoints, survival,
+    trial design, the categories actually in play - is still gathered. The raw esearch
+    count is logged per molecule; a final 0 emits a WARNING (silent 0 hid this twice).
+    """
     mol, ind = clean_query(molecule), clean_query(indication)
     attempts: list[tuple[str, int, str | None]] = []
     if ind:
-        attempts.append((pubmed_query(molecule, indication, with_indication=True),
-                         max_abstracts, None))
-    attempts.append((pubmed_query(molecule, indication, with_indication=False),
-                     max_abstracts, None))
+        attempts.append(
+            (
+                pubmed_query(molecule, indication, with_indication=True),
+                max_abstracts,
+                None,
+            )
+        )
+    attempts.append(
+        (pubmed_query(molecule, indication, with_indication=False), max_abstracts, None)
+    )
     if ind:  # NEW: drop the HTA hard-AND (soft boost, not a MUST)
         attempts.append((f"({mol}) AND ({ind})", max_abstracts, None))
     attempts.append((f"({mol})", max(max_abstracts, 40), "pub_date"))  # molecule alone
@@ -341,8 +318,8 @@ def fetch_molecule_docs(
         _warn(decision_id, f"pubmed[{molecule}]", exc)
 
     try:
-        # EXACT generic match; if none, parse_label_docs returns [] → NO label (no
-        # default-doc fallback — that was the ORSERDU wrong-drug bug).
+        # EXACT generic match; if none, parse_label_docs returns [] -> NO label (no
+        # default-doc fallback - that was the ORSERDU wrong-drug bug).
         labels, _ = fda.fetch_label_docs(
             f'openfda.generic_name:"{primary_generic(molecule)}"'
         )
@@ -355,14 +332,12 @@ def fetch_molecule_docs(
 def _warn(decision_id: str, source: str, exc: Exception) -> None:
     print(
         f"[build_corpus] {decision_id}: {source} fetch failed "
-        f"({type(exc).__name__}: {exc}) — skipping that source",
+        f"({type(exc).__name__}: {exc}) - skipping that source",
         file=sys.stderr,
     )
 
 
-# --------------------------------------------------------------------------- #
 # Assemble
-# --------------------------------------------------------------------------- #
 
 
 def _drug_from_title(title: str) -> DrugIdentity:
@@ -390,8 +365,10 @@ def build_corpus(
 
     for gr in load_cached_guidance(nice_cache_dir):
         owner = by_ta.get(gr.ta_id)
-        di = normalize_drug(owner.drug or "") if owner else _drug_from_title(
-            gr.parsed.title if gr.parsed else ""
+        di = (
+            normalize_drug(owner.drug or "")
+            if owner
+            else _drug_from_title(gr.parsed.title if gr.parsed else "")
         )
         doc = dossier_to_doc(
             gr,
@@ -414,9 +391,7 @@ def build_corpus(
     return store.chunks
 
 
-# --------------------------------------------------------------------------- #
 # Fail-loud post-build health gate
-# --------------------------------------------------------------------------- #
 
 
 def assert_corpus_healthy(
@@ -439,11 +414,11 @@ def assert_corpus_healthy(
     if comp["distinct_drugs"] <= 1 or comp["distinct_drugs"] < min_distinct_ratio * n:
         raise CorpusHealthError(
             f"blob: distinct_drugs={comp['distinct_drugs']} not ≈ n_decisions={n} "
-            f"(min {min_distinct_ratio:.0%}) — chunks are not molecule-specific"
+            f"(min {min_distinct_ratio:.0%}) - chunks are not molecule-specific"
         )
     if comp["literature_chunks"] == 0:
         raise CorpusHealthError(
-            "literature arm did not land (0 literature chunks) — check the PubMed query"
+            "literature arm did not land (0 literature chunks) - check the PubMed query"
         )
 
     store = InMemoryStore()
@@ -472,7 +447,7 @@ def assert_corpus_healthy(
 
     if n > 1 and len(pool_sigs) <= 1:
         raise CorpusHealthError(
-            "blob: every decision has an identical eligible pool — retrieval is not "
+            "blob: every decision has an identical eligible pool - retrieval is not "
             "decision-specific"
         )
     if lit_present < min_literature_ratio * n:
@@ -498,9 +473,7 @@ def assert_corpus_healthy(
     }
 
 
-# --------------------------------------------------------------------------- #
 # Persistence
-# --------------------------------------------------------------------------- #
 
 
 def save_corpus(chunks: list[Chunk], path: Path = DEFAULT_CORPUS) -> None:
@@ -552,7 +525,7 @@ def _main() -> int:
         return 1
     save_corpus(chunks, args.out)
     staged.unlink(missing_ok=True)
-    print(f"corpus: {len(chunks)} chunks → {args.out}")
+    print(f"corpus: {len(chunks)} chunks -> {args.out}")
     print("health:", json.dumps(report, indent=2))
     return 0
 

@@ -1,9 +1,9 @@
-"""Date normalization — ported verbatim-in-spirit from the STRATA research repo.
+"""Date normalization - ported verbatim-in-spirit from the STRATA research repo.
 
 The gate for value-based column detection: NICE date cells arrive from openpyxl as
 datetime objects, registry dates as ISO/compact strings, guidance pages as 'DD Month
 YYYY' text. This coerces all of them to ``datetime.date`` and returns ``None`` for
-anything that isn't a date (e.g. recommendation prose) — which is exactly what lets the
+anything that isn't a date (e.g. recommendation prose) - which is exactly what lets the
 column detectors find the date column by content rather than by header name.
 
 Pure; no I/O.
@@ -22,7 +22,7 @@ _EXCEL_EPOCH = datetime(1899, 12, 30)  # Excel day-0 (1900 leap bug accounted fo
 def normalize_date(raw) -> date | None:
     """Coerce a spreadsheet/registry/page date value to ``datetime.date``, or ``None``.
 
-    Returns ``None`` for anything that isn't a date — that is what makes value-based
+    Returns ``None`` for anything that isn't a date - that is what makes value-based
     column detection work.
     """
     if raw is None:

@@ -95,7 +95,7 @@ def test_fetch_ok_tags_provenance_and_boundary(tmp_path: Path) -> None:
     assert res.status == "ok"
     assert res.parsed.published_date == date(2026, 1, 15)
     rec = res.source_record
-    assert rec.doc_type == DocType.ta_final_guidance  # gold-bearing → excluded
+    assert rec.doc_type == DocType.ta_final_guidance  # gold-bearing -> excluded
     assert rec.appraisal_id == "TA1000"
     assert rec.doc_date == date(2026, 1, 15)
     assert len(calls) == 1

@@ -1,10 +1,10 @@
 """Context connectors: public-source fetchers + a generic user-supplied-content adder.
 
-Each connector returns ``ContextRecord``s — a content-addressed ``SourceRecord`` plus the
+Each connector returns ``ContextRecord``s - a content-addressed ``SourceRecord`` plus the
 ``Chunk``s extracted from it, tagged with drug / doc_date / doc_type / source_id. Public
 connectors wrap the hardened source clients (don't re-derive). The ``GenericConnector`` is
 the heart of "add external context in real time": a direct add of a URL, pasted text, or an
-uploaded file — the URL path is SSRF-guarded and DEFAULT-CLOSED.
+uploaded file - the URL path is SSRF-guarded and DEFAULT-CLOSED.
 """
 from __future__ import annotations
 
@@ -61,9 +61,9 @@ def _record_from_doc(doc) -> ContextRecord | None:
     return ContextRecord(source_record=rec, chunks=doc_to_chunks(doc))
 
 
-# --------------------------------------------------------------------------- #
+
 # Public connectors (live fetch from the hardened source clients)
-# --------------------------------------------------------------------------- #
+
 
 class ClinicalTrialsConnector(ContextConnector):
     key = "clinicaltrials"
@@ -112,7 +112,7 @@ class OpenFDAConnector(ContextConnector):
 
 
 class NICEConnector(ContextConnector):
-    """NICE live-horizon connector: index → per-TA crawl.
+    """NICE live-horizon connector: index -> per-TA crawl.
 
     Downloads the cancer-recommendations index xlsx, takes the recent TA slice (FY within
     two years of ``as_of``), keeps the TAs whose technology shares the query molecule, and
@@ -174,9 +174,9 @@ PUBLIC_CONNECTORS: dict[str, type[ContextConnector]] = {
 }
 
 
-# --------------------------------------------------------------------------- #
-# Generic connector — add a URL / pasted text / uploaded file as context
-# --------------------------------------------------------------------------- #
+
+# Generic connector - add a URL / pasted text / uploaded file as context
+
 
 class UrlNotAllowed(ValueError):
     """Raised when a user-supplied URL fails the SSRF allowlist / safety checks."""

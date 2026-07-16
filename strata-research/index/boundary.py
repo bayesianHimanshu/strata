@@ -1,22 +1,3 @@
-"""Phase 2 Task 1 — the corpus-composition boundary.
-
-A date cutoff alone does not stop the leak. NICE's own appraisal documents (ERG/EAG
-report, committee papers, ACD, final guidance) carry the committee's reasoning and
-are dated *before* the final decision — they pass the temporal buffer yet hand the
-synthesizer the answer. The binding guard is **source-type exclusion**, composed on
-top of the temporal LeakageFilter.
-
-`RetrievalBoundary` is the single object retrieval is gated by. It admits a chunk iff
-ALL hold:
-
-  1. temporal:   the chunk's date clears the LeakageFilter (invariant #2);
-  2. dossier:    the chunk is NOT a gold-bearing dossier doc of the *target* appraisal;
-  3. sibling:    the chunk is NOT a gold-bearing dossier doc of a registered same-drug
-                 *sibling* appraisal (a research parameter, default ON, never silent).
-
-Pure and total. `index.store.search` takes a RetrievalBoundary and re-asserts it on
-every returned hit, so a leaky query is unrepresentable.
-"""
 from __future__ import annotations
 
 from collections.abc import Iterable
@@ -38,7 +19,7 @@ class CorpusBoundaryError(LeakageError):
 
 def compute_sibling_map(decisions: Iterable[Decision]) -> dict[str, frozenset[str]]:
     """Map each appraisal_id -> the set of OTHER appraisal_ids sharing its primary
-    molecule (per normalize_drug — NOT the raw technology string, which never matched
+    molecule (per normalize_drug - NOT the raw technology string, which never matched
     because combinations differ). This is the input to the same-drug sibling policy.
     """
     by_drug: dict[str, set[str]] = {}
@@ -64,7 +45,7 @@ class RetrievalBoundary:
     sibling_appraisal_ids: frozenset[str] = frozenset()
     exclude_siblings: bool = True  # registered research parameter (default ON)
     # Molecule scope (Corpus rebuild §3): an ADDED filter on top of the three leakage
-    # predicates — a chunk is in scope only if its drug is one of the decision's
+    # predicates - a chunk is in scope only if its drug is one of the decision's
     # molecules. Empty = scoping OFF (back-compat; the boundary then admits all drugs).
     molecules: frozenset[str] = frozenset()
 

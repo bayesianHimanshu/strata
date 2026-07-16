@@ -1,22 +1,3 @@
-"""The vector store and its default chunking.
-
-Two design commitments:
-
-  1. `structure_aware_prefixed` chunking is the default (CLAUDE.md). Chunks respect
-     document structure (headings / paragraph breaks) and each carries a breadcrumb
-     prefix so a retrieved fragment still announces where it came from — which both
-     improves retrieval and preserves provenance into the chunk.
-
-  2. Retrieval is leakage-gated by construction. `VectorStore.search` *requires* a
-     LeakageFilter; the store applies it as a hard pre-filter and re-asserts the
-     bound on every returned hit. There is no way to query the corpus without
-     declaring the decision you are retrieving for (invariant #2).
-
-`InMemoryStore` is the pure, dependency-free reference backend used in tests and the
-PoV. It scores lexically (token overlap) so the leakage and provenance behavior is
-testable with no embedding model or network. `QdrantStore` is the production backend
-behind a lazy import; it shares the exact same leakage gate.
-"""
 from __future__ import annotations
 
 import math
@@ -28,22 +9,11 @@ from typing import Protocol
 
 from core.contracts import Claim, DocType, Span
 
-# --------------------------------------------------------------------------- #
 # Chunking
-# --------------------------------------------------------------------------- #
 
 
 @dataclass(frozen=True)
 class Chunk:
-    """A retrievable unit. `text` is what gets embedded (breadcrumb-prefixed);
-    `span` indexes the *raw* source content so a Claim can be reconstructed.
-
-    Carries `doc_type` + `appraisal_id` (Phase 2 Task 1) so the corpus-composition
-    boundary can exclude an appraisal's own gold-bearing dossier chunks, plus `drug`
-    (normalized molecule key) / `indication` / `decision_id` (Corpus rebuild) so
-    retrieval is molecule-scoped per decision instead of a single undifferentiated
-    blob."""
-
     source_id: str
     doc_date: date | None
     section_path: str
@@ -133,15 +103,15 @@ def structure_aware_prefixed_chunks(
     overlap: int = 150,
 ) -> list[Chunk]:
     """Chunk `text` honoring section structure, prefixing each chunk with a
-    `[source_id › Title › Section]` breadcrumb. Windows long sections with overlap.
+    `[source_id > Title > Section]` breadcrumb. Windows long sections with overlap.
     Spans index the raw source so retrieval stays reconstructable. `doc_type`,
     `appraisal_id`, `drug`, `indication`, `decision_id` propagate to every chunk for
     the corpus-composition boundary and molecule scoping.
     """
     chunks: list[Chunk] = []
-    crumb_root = " › ".join(p for p in (source_id, doc_title) if p)
+    crumb_root = " > ".join(p for p in (source_id, doc_title) if p)
     for heading, sec_start, sec_end in _segment_sections(text):
-        crumb = " › ".join(p for p in (crumb_root, heading) if p)
+        crumb = " > ".join(p for p in (crumb_root, heading) if p)
         prefix = f"[{crumb}]\n" if crumb else ""
         body = text[sec_start:sec_end]
         if not body.strip():
@@ -188,9 +158,8 @@ def chunks_from_record(record, text: str, *, doc_title: str = "", **kw) -> list[
     )
 
 
-# --------------------------------------------------------------------------- #
 # Retrieval
-# --------------------------------------------------------------------------- #
+
 
 _TOKEN = re.compile(r"[a-z0-9]+")
 
@@ -206,7 +175,7 @@ class Hit:
 
     def to_claim(self) -> Claim:
         """Build the invariant-#1 Claim for this retrieved chunk. Only callable for
-        a dated chunk — a hit that passed the leakage gate always has a date."""
+        a dated chunk - a hit that passed the leakage gate always has a date."""
         if self.chunk.doc_date is None:
             raise ValueError("cannot build a Claim from an undated chunk")
         return Claim(
@@ -222,7 +191,7 @@ class Boundary(Protocol):
     """The retrieval gate: a date-only LeakageFilter or a composite RetrievalBoundary.
 
     Both expose chunk-level `filter` + `assert_admits`, so the store treats them
-    identically. Retrieval cannot be performed without one — a query that does not
+    identically. Retrieval cannot be performed without one - a query that does not
     declare the decision it retrieves for is unrepresentable (invariants #2 + Task 1).
     """
 

@@ -26,7 +26,7 @@ def test_with_clause_drops_backbone() -> None:
 
 
 def test_fixed_combination_splits_on_dash_and_plus() -> None:
-    assert _mols("Trifluridine–tipiracil with bevacizumab") == {
+    assert _mols("Trifluridine-tipiracil with bevacizumab") == {
         "trifluridine",
         "tipiracil",
     }

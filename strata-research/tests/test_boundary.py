@@ -1,7 +1,7 @@
-"""Phase 2 Task 1 — corpus-composition boundary. The binding leakage guard.
+"""Phase 2 Task 1 - corpus-composition boundary. The binding leakage guard.
 
 Sits alongside the date-cutoff tests (test_leakage / test_store): here we assert
-the SOURCE-TYPE exclusion that a date filter cannot provide — an appraisal's own
+the SOURCE-TYPE exclusion that a date filter cannot provide - an appraisal's own
 gold-bearing dossier docs, and registered same-drug sibling dossiers, are never
 retrievable for that decision even when their dates clear the buffer.
 """

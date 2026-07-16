@@ -10,4 +10,4 @@ They mirror the real page structure exercised by the parser:
 - a following numbered section (`2 …`) that bounds the rationale.
 
 Authored offline (the build sandbox has no network). When run open-network, replace
-with live-fetched snapshots — the parser is unchanged.
+with live-fetched snapshots - the parser is unchanged.

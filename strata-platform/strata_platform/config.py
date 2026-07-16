@@ -40,7 +40,7 @@ class Settings(BaseSettings):
     @property
     def database_url_sync(self) -> str:
         """Sync SQLAlchemy URL (psycopg) derived from the async URL. The DB-backed job
-        store, ledger, and pgvector retrieval run synchronously so the capability → job
+        store, ledger, and pgvector retrieval run synchronously so the capability -> job
         call chain stays a single, auditable thread."""
         return self.database_url.replace("+asyncpg", "+psycopg")
 

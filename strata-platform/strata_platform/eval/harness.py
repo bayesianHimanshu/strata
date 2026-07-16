@@ -57,14 +57,14 @@ def cohen_kappa(a: list[int], b: list[int]) -> float | None:
     return 1.0 if pe == 1 and po == 1 else (0.0 if pe == 1 else (po - pe) / (1 - pe))
 
 
-# --------------------------------------------------------------------------- #
-# Grounding gate — the precision mechanism (invariant #1 + the finding)
-# --------------------------------------------------------------------------- #
+
+# Grounding gate - the precision mechanism (invariant #1 + the finding)
+
 
 def ground_category(category: VulnCategory, chunks: list[Chunk]) -> Chunk | None:
     """The retrieved chunk that best supports ``category``: the first chunk (highest
     retrieval rank, as passed) whose text contains one of the category's pre-registered
-    cues. None → the prediction is NOT grounded and must be dropped."""
+    cues. None -> the prediction is NOT grounded and must be dropped."""
     cues = CATEGORY_CUES.get(category, ())
     for c in chunks:
         low = c.text.lower()
@@ -89,7 +89,7 @@ def ground_categories(predicted: set[VulnCategory],
 def open_vs_closed(decision_ids, gold, closed_pred, open_pred) -> dict:
     """The headline contrast: per-category precision/recall for closed-book (parametric)
     vs open-book (retrieval-grounded), plus the signed deltas. Reproduces the study's
-    shape — precision up under grounding, at some recall cost."""
+    shape - precision up under grounding, at some recall cost."""
     closed = per_category(decision_ids, gold, closed_pred)
     open_ = per_category(decision_ids, gold, open_pred)
     return {

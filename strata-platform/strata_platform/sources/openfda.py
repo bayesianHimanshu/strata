@@ -1,13 +1,13 @@
-"""openFDA client — drug labels + FAERS adverse events (safety signal + label corpus).
+"""openFDA client - drug labels + FAERS adverse events (safety signal + label corpus).
 
 openFDA returns a ``meta.results.total`` count and a ``results`` array. Parsing is split
 out so the count/extraction logic is testable offline. The retrieval corpus also needs the
-label TEXT (indications + warnings) and its effective date for leakage filtering —
+label TEXT (indications + warnings) and its effective date for leakage filtering -
 ``parse_label_docs`` provides that as a pure function.
 
 Hard-won fixes carried over:
   - ``404`` means "no matches" = treat as an empty result, NOT an error.
-  - Query labels by ``generic_name`` (exact) — never fall back to a default/first doc
+  - Query labels by ``generic_name`` (exact) - never fall back to a default/first doc
     (that was the "ORSERDU label on every drug" wrong-drug bug).
   - An API key (when configured) raises the rate limits.
 """
@@ -39,7 +39,7 @@ class LabelDoc(BaseModel):
 
     brand: str
     generic: str
-    text: str  # indications + warnings — the retrievable label content
+    text: str  # indications + warnings - the retrievable label content
     effective_date: date | None = None
 
 
@@ -130,7 +130,7 @@ class OpenFDAClient:
         return self._query("drug/event.json", search, limit)
 
     def fetch_events(self, search: str, *, limit: int = 100, skip: int = 0) -> dict:
-        """Raw FAERS event payload (results[]) for signal ingestion. 404 ('no matches') →
+        """Raw FAERS event payload (results[]) for signal ingestion. 404 ('no matches') ->
         empty results, not an error. openFDA caps ``limit`` at 1000."""
         params = self._params(search, min(limit, 1000))
         params["skip"] = skip

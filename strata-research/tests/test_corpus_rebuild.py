@@ -51,7 +51,7 @@ def test_scoping_isolates_molecules() -> None:
 
 
 def test_scoping_off_when_no_molecules() -> None:
-    # back-compat: empty molecules → scoping disabled, both admitted
+    # back-compat: empty molecules -> scoping disabled, both admitted
     store = InMemoryStore()
     store.add(_lit_chunks("PMID:A", "osimertinib"))
     store.add(_lit_chunks("PMID:B", "vorasidenib"))
@@ -131,7 +131,7 @@ def test_fetch_literature_sets_retmax_and_lands() -> None:
 
 
 class _ScriptedPub:
-    """Returns 0 for any query containing the HTA clause, hits on molecule-alone —
+    """Returns 0 for any query containing the HTA clause, hits on molecule-alone -
     reproducing talazoparib/epcoritamab (no HEOR papers, plenty of clinical lit)."""
 
     def __init__(self):
@@ -199,7 +199,7 @@ def test_health_gate_passes_on_decision_specific_corpus() -> None:
 
 
 def test_health_gate_raises_on_blob_no_drug() -> None:
-    # every chunk drug=None → distinct_drugs 0 → blob
+    # every chunk drug=None -> distinct_drugs 0 -> blob
     blob = []
     for i in range(3):
         blob += structure_aware_prefixed_chunks(

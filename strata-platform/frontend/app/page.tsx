@@ -35,13 +35,13 @@ export default function Home() {
         <p>
           STRATA runs evidence-generation capabilities on a trust substrate: every claim
           is grounded in retrieved sources, under a leakage boundary enforced in code.
-          You see the reasoning and its provenance — not a black box.
+          You see the reasoning and its provenance - not a black box.
         </p>
         <div className="finding">
           Validated finding: grounding a frontier model in public evidence turns an
           over-confident prior into a <b>disciplined, higher-precision</b> predictor of
-          HTA evidence concerns — most decisively for cost-effectiveness uncertainty
-          (precision 0.44&nbsp;→&nbsp;1.00) — and stays honest where the public record
+          HTA evidence concerns - most decisively for cost-effectiveness uncertainty
+          (precision 0.44&nbsp;->&nbsp;1.00) - and stays honest where the public record
           is silent.
         </div>
       </section>
@@ -66,7 +66,7 @@ export default function Home() {
                 </span>
               </div>
               <p>{c.summary}</p>
-              {meta.live && <span className="go">Open the analysis →</span>}
+              {meta.live && <span className="go">Open the analysis -></span>}
             </div>
           );
           return meta.live && meta.href ? (

@@ -5,7 +5,7 @@ over one v2 study object and is unit-tested without the network.
 
 CT.gov sits behind Akamai Bot Manager, which fingerprints the TLS handshake (JA3/JA4) and
 403s a plain httpx client even with a browser User-Agent and a US IP. We therefore default
-to a ``curl_cffi`` session impersonating Chrome — the Phase-0-hardened fix. Any client
+to a ``curl_cffi`` session impersonating Chrome - the Phase-0-hardened fix. Any client
 exposing ``.get(url, params=...)`` (incl. httpx) can be injected for tests.
 """
 from __future__ import annotations
@@ -42,7 +42,7 @@ class TrialRecord(BaseModel):
 
 def parse_study(study: dict) -> TrialRecord:
     """Extract a typed record from a v2 ``studies[i]`` object. Tolerant of missing
-    fields — CT.gov omits sections freely."""
+    fields - CT.gov omits sections freely."""
     ps = study.get("protocolSection", {})
     ident = ps.get("identificationModule", {})
     status = ps.get("statusModule", {})
@@ -67,11 +67,11 @@ def parse_study(study: dict) -> TrialRecord:
     )
 
 
-# --------------------------------------------------------------------------- #
-# Structured fetch — preserves outcomes + arms for the endpoint/comparator landscape.
+
+# Structured fetch - preserves outcomes + arms for the endpoint/comparator landscape.
 # Endpoints and comparators are STRUCTURED fields in the v2 registration; we keep them
 # structured (don't flatten to text) so counts are deterministic and auditable.
-# --------------------------------------------------------------------------- #
+
 
 _COMPARATOR_ARM_TYPES = {"ACTIVE_COMPARATOR", "PLACEBO_COMPARATOR", "NO_INTERVENTION",
                          "SHAM_COMPARATOR"}
@@ -197,7 +197,7 @@ class ClinicalTrialsClient:
         """One page of studies. Returns (parsed, provenance snapshot, next token).
 
         ``intervention`` maps to ``query.intr`` (the molecule) and ``condition`` to
-        ``query.cond`` (the indication) — so the corpus pulls a decision's OWN molecule's
+        ``query.cond`` (the indication) - so the corpus pulls a decision's OWN molecule's
         trials, not a global condition sweep. The snapshot is content-addressed over the
         raw response bytes.
         """

@@ -25,7 +25,7 @@ from strata_platform.substrate.contracts import Chunk, Decision, DocType
 # --- query hygiene ---------------------------------------------------------- #
 
 def test_clean_query_strips_specials_and_dashes() -> None:
-    assert clean_query("trifluridine–tipiracil (combo): 90mg") == "trifluridine-tipiracil combo 90mg"
+    assert clean_query("trifluridine-tipiracil (combo): 90mg") == "trifluridine-tipiracil combo 90mg"
     assert primary_generic("nab-paclitaxel") == "nab paclitaxel"
 
 
@@ -96,7 +96,7 @@ class _FakePubMed:
         return SearchResult(term=term, count=1, pmids=["111"]), None
 
     def fetch_abstracts(self, pmids):
-        # within the leakage buffer → must be dropped by build_corpus
+        # within the leakage buffer -> must be dropped by build_corpus
         return [Abstract(pmid="111", title="late", abstract="x",
                          pub_date=date(2026, 4, 15))], None
 
@@ -169,7 +169,7 @@ def test_health_gate_raises_on_missing_literature() -> None:
 
 def test_health_gate_raises_on_wrong_drug_routing() -> None:
     # Clean base + a pile of UNTAGGED literature (drug=None) admitted for every decision:
-    # retrieval can't route to the molecule → drug-match collapses below threshold.
+    # retrieval can't route to the molecule -> drug-match collapses below threshold.
     chunks = [_lit("osimertinib"), _lit("vorasidenib"), _lit("ripretinib")]
     for i in range(8):
         chunks.append(Chunk(text="overall survival comparator ICER untagged",

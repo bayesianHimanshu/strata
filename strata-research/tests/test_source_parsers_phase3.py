@@ -50,7 +50,7 @@ def test_parse_efetch_extracts_title_abstract_date() -> None:
 
 def test_parse_efetch_medline_date_fallback() -> None:
     out = parse_efetch(EFETCH_XML)
-    assert out[1].pub_date == date(2023, 1, 1)  # 'Winter' → month defaults to 1
+    assert out[1].pub_date == date(2023, 1, 1)  # 'Winter' -> month defaults to 1
 
 
 def test_parse_efetch_bad_xml_is_empty() -> None:
@@ -69,7 +69,7 @@ def test_parse_label_docs_text_and_date() -> None:
                 "warnings_and_cautions": ["Immune-mediated adverse reactions."],
                 "effective_time": "20240315",
             },
-            {"openfda": {}, "effective_time": "20240101"},  # no text → dropped
+            {"openfda": {}, "effective_time": "20240101"},  # no text -> dropped
         ]
     }
     docs = parse_label_docs(payload)

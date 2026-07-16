@@ -1,9 +1,9 @@
 """Ingestion service: fetch via connectors, dedup, embed once, upsert, honour a freshness
 TTL. Three caching layers, all fail-soft:
 
-  * content-addressed snapshots — same bytes → same SHA → never re-stored;
-  * embed-once — a record whose content hash is already indexed is skipped (no re-embed);
-  * a fetch ledger — (drug, indication, connector) → fetched_at, enforcing a TTL so a
+  * content-addressed snapshots - same bytes -> same SHA -> never re-stored;
+  * embed-once - a record whose content hash is already indexed is skipped (no re-embed);
+  * a fetch ledger - (drug, indication, connector) -> fetched_at, enforcing a TTL so a
     repeat within the window serves from the index without re-hitting the API.
 
 A connector error degrades that source to zero with a recorded error; it never aborts the

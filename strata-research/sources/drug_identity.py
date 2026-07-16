@@ -1,16 +1,3 @@
-"""Drug identity normalization — the ONE normalizer (Corpus rebuild §1).
-
-A NICE "technology" string is usually a regimen, e.g. "Belantamab mafodotin with
-pomalidomide and dexamethasone". `normalize_drug` parses it into the novel
-molecule(s) under appraisal (INN keys), dropping the backbone agents that follow
-"with" (steroids, chemotherapy) and salt/dosing noise.
-
-This single function is used by BOTH corpus gathering and retrieval scoping (so a
-chunk's drug key and a decision's molecule scope are produced identically), and by
-the sibling map — which previously matched on the raw string and so never fired.
-
-Pure and deterministic; unit-tested on the real strings in decisions.json.
-"""
 from __future__ import annotations
 
 import re
@@ -18,9 +5,9 @@ from dataclasses import dataclass
 
 # The technology is the molecule(s) BEFORE "with"/"plus"; everything after is backbone.
 _WITH = re.compile(r"\s+(?:with|plus)\s+", re.IGNORECASE)
-# Co-technology separators. NOTE: en/em dash (fixed combos like "trifluridine–tipiracil")
+# Co-technology separators. NOTE: en/em dash (fixed combos like "trifluridine-tipiracil")
 # and " and " split; a plain hyphen does NOT, to preserve hyphenated INNs.
-_CO = re.compile(r"\s*(?:\+|/|;|–|—|\band\b)\s*", re.IGNORECASE)
+_CO = re.compile(r"\s*(?:\+|/|;|-|-|\band\b)\s*", re.IGNORECASE)
 
 _SALTS = re.compile(
     r"\b(hydrochloride|dihydrochloride|hydrobromide|mesylate|maleate|sulfate|sulphate|"
@@ -42,7 +29,7 @@ _BACKBONE = frozenset(
     }
 )
 
-# Brand → INN. NICE mostly uses INNs already; openFDA returns brand names, so a small
+# Brand -> INN. NICE mostly uses INNs already; openFDA returns brand names, so a small
 # map keeps generic_name matching honest (extend as needed).
 _BRAND2INN = {
     "orserdu": "elacestrant",
@@ -74,7 +61,7 @@ def _clean_molecule(token: str) -> str:
     t = _DOSING.sub(" ", t)
     t = re.sub(r"[^a-z0-9 \-]", " ", t)
     t = re.sub(r"\s+", " ", t).strip()
-    t = re.sub(r"[-\s]*based$", "", t).strip()  # "platinum-based" → "platinum"
+    t = re.sub(r"[-\s]*based$", "", t).strip()  # "platinum-based" -> "platinum"
     return _BRAND2INN.get(t, t)
 
 
@@ -89,7 +76,7 @@ def normalize_drug(technology: str) -> DrugIdentity:
         if m and m not in _BACKBONE and m not in molecules:
             molecules.append(m)
 
-    if not molecules:  # pure-backbone head, or unparseable → fall back to whole string
+    if not molecules:  # pure-backbone head, or unparseable -> fall back to whole string
         whole = _clean_molecule(display)
         if whole and whole not in molecules:
             molecules.append(whole)

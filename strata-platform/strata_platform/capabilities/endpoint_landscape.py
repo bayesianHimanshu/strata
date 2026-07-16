@@ -1,10 +1,10 @@
-"""Endpoint & Comparator Landscape — indication-centric, structured-first.
+"""Endpoint & Comparator Landscape - indication-centric, structured-first.
 
 For an indication, reconstruct the endpoints and comparators registered trials have used,
 to inform trial design before submission. Endpoints/comparators are STRUCTURED fields in
 the CT.gov v2 registration, so we aggregate and **count deterministically** and use the
 model ONLY to (a) cluster variant names into canonical entries and (b) flag surrogates
-(lexicon-first — the model never overrules a known case). Every entry traces to the NCT
+(lexicon-first - the model never overrules a known case). Every entry traces to the NCT
 ids that produced it; implications cite only existing entries (no new facts).
 """
 from __future__ import annotations
@@ -26,8 +26,8 @@ from strata_platform.substrate.contracts import (
 )
 from strata_platform.substrate.reasoner import Reasoner
 
-# Deterministic surrogate lexicon — the model never overrules these. Returns True
-# (surrogate), False (final outcome), or None (unknown → ask the model).
+# Deterministic surrogate lexicon - the model never overrules these. Returns True
+# (surrogate), False (final outcome), or None (unknown -> ask the model).
 _SURROGATE_CUES = ("progression-free survival", "progression free survival", "pfs",
                    "objective response", "response rate", "orr", "overall response",
                    "disease-free survival", "disease free survival", "dfs",
@@ -53,12 +53,12 @@ def _as_of(params: dict) -> date:
     return date.fromisoformat(raw) if isinstance(raw, str) else (raw or date.today())
 
 
-# --------------------------------------------------------------------------- #
+
 # Deterministic aggregate
-# --------------------------------------------------------------------------- #
+
 
 def _collect(trials: list[StructuredTrial]):
-    """Bucket outcomes + comparator interventions → raw string → set of nct ids. Counts
+    """Bucket outcomes + comparator interventions -> raw string -> set of nct ids. Counts
     come from HERE, not the model."""
     raw_ep: dict[str, dict] = {}
     raw_cmp: dict[str, set[str]] = {}
@@ -82,9 +82,9 @@ def _collect(trials: list[StructuredTrial]):
     return raw_ep, raw_cmp
 
 
-# --------------------------------------------------------------------------- #
+
 # LLM canonicalisation (the only model step for the entries)
-# --------------------------------------------------------------------------- #
+
 
 _EP_SYSTEM = (
     "Cluster these raw trial-outcome strings into canonical endpoints. For each cluster "
@@ -138,7 +138,7 @@ def _canonicalise_endpoints(reasoner: Reasoner, raw_ep: dict) -> list[EndpointEn
         e = _make(c.get("canonical", ""), variants, c.get("is_surrogate"))
         if e is not None:
             entries.append(e)
-    for raw in raw_ep:                       # any uncovered raw string → identity cluster
+    for raw in raw_ep:                       # any uncovered raw string -> identity cluster
         if raw not in covered:
             e = _make(raw, [raw], None)
             if e is not None:
@@ -183,7 +183,7 @@ def _canonicalise_comparators(reasoner: Reasoner, raw_cmp: dict) -> list[Compara
 
 def _enrich_hta(comparators: list[ComparatorEntry], indication: str, store) -> None:
     """Best-effort NICE signal from dossier chunks in the store. Leaves ``unknown`` when
-    absent — never guesses."""
+    absent - never guesses."""
     try:
         from strata_platform.substrate.contracts import DocType
         boundary = RetrievalBoundary.live(frozenset(), as_of=date.today())
@@ -235,7 +235,7 @@ def _imply(reasoner: Reasoner, endpoints: list[EndpointEntry],
         if top.is_surrogate and top.kind == OutcomeKind.primary:
             imps.append(DesignImplication(
                 text=(f"{top.canonical} dominates as a primary endpoint "
-                      f"({top.trial_count} trials) but is a surrogate — expect HTA pressure "
+                      f"({top.trial_count} trials) but is a surrogate - expect HTA pressure "
                       "on overall-survival maturity."),
                 refs=[top.entry_id]))
     return imps

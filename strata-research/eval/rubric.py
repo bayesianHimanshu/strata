@@ -1,21 +1,3 @@
-"""The pre-registered scoring rubric (invariant #6).
-
-What is pre-registered and frozen here, before any synthesizer run:
-
-  * the taxonomy (VulnCategory — defined in core.contracts, re-exported);
-  * CATEGORY_CUES — the cue lexicon the gold-extraction path keys on;
-  * the MATCH_RULE — how a prediction is counted correct against gold.
-
-The whole thing is content-hashed (`rubric_hash`) and the hash is committed to
-`eval/rubric.lock`. `assert_rubric_committed()` recomputes the hash and refuses to
-proceed if it has drifted — so a post-hoc edit cannot silently change the scoring.
-A real change is a new RUBRIC_VERSION with a freshly committed hash, never an edit
-in place.
-
-This module is import-only constants + pure functions. DecisionMiner (gold path)
-and the synthesizer (prediction path) may both read it — it is a shared *spec*, not
-shared mutable state, so the isolation invariant (#5) is preserved.
-"""
 from __future__ import annotations
 
 import hashlib

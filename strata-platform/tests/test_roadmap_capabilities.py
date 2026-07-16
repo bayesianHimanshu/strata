@@ -1,4 +1,4 @@
-"""Registry completeness — all four capabilities reachable only via the registry."""
+"""Registry completeness - all four capabilities reachable only via the registry."""
 from __future__ import annotations
 
 from strata_platform.capabilities.registry import list_capabilities

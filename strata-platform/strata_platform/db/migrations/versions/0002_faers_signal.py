@@ -36,8 +36,8 @@ CREATE INDEX IF NOT EXISTS ix_faers_drug_name ON faers_drug (lower(name));
 CREATE INDEX IF NOT EXISTS ix_faers_reaction_pt ON faers_reaction (pt);
 """
 
-# Disproportionality view — per (suspect drug, event PT) 2x2 cells, PRR, ROR, signal_flag.
-# Ported from VIGIL vw_signal_metrics (BigQuery→Postgres, VAERS→FAERS), generalised to a
+# Disproportionality view - per (suspect drug, event PT) 2x2 cells, PRR, ROR, signal_flag.
+# Ported from VIGIL vw_signal_metrics (BigQuery->Postgres, VAERS->FAERS), generalised to a
 # per-drug dimension. signal_flag = PRR>=2 AND a>=3 (conventional screening threshold).
 _VIEW = """
 CREATE OR REPLACE VIEW vw_signal_metrics AS

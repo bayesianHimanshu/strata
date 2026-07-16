@@ -1,9 +1,9 @@
-"""HTA Archaeology — the validated capability.
+"""HTA Archaeology - the validated capability.
 
 Predicts the evidence-vulnerability categories an HTA committee raised for a decision.
 Two modes (the STRATA experiment, now a service):
-  - closed_book: parametric prior, no retrieval — ungrounded Vulnerability[].
-  - open_book: retrieval under the RetrievalBoundary — grounded Vulnerability[] with
+  - closed_book: parametric prior, no retrieval - ungrounded Vulnerability[].
+  - open_book: retrieval under the RetrievalBoundary - grounded Vulnerability[] with
     provenance to the retrieved chunks.
 The open−closed contrast is what the eval harness scores.
 """
@@ -34,7 +34,7 @@ _SYSTEM = (
 
 
 def _base_prompt(d) -> str:
-    """The shared closed/open prompt skeleton — invariant #8: open-book only ADDS the
+    """The shared closed/open prompt skeleton - invariant #8: open-book only ADDS the
     retrieved evidence; same model, same prompt skeleton, so the contrast is retrieval."""
     return (f"HTA body: {d.agency}\nTechnology: {d.drug}\n"
             f"Indication: {d.indication}\nReturn the JSON category list.")
@@ -63,7 +63,7 @@ class HTAArchaeology(Capability):
                                     vulnerabilities=vulns, payload={"mode": mode})
 
         # open_book: retrieve under the boundary, predict with the SAME prompt skeleton +
-        # the retrieved evidence, then apply the grounding gate — a predicted category is
+        # the retrieved evidence, then apply the grounding gate - a predicted category is
         # emitted ONLY if a retrieved chunk supports it (the precision mechanism). Every
         # emitted Vulnerability carries the supporting chunk as provenance (invariant #1).
         sibling_ids = frozenset(request.params.get("sibling_ids", ()))

@@ -3,7 +3,7 @@
 AzureOpenAIReasoner targets an Azure OpenAI deployment of a GPT-5.x reasoning model:
 temperature is unsupported (rejected by reasoning models), so we omit it and use
 max_completion_tokens + reasoning_effort. Auth is api-key OR Entra managed identity
-(token) — managed identity is the production path (no secrets in the app).
+(token) - managed identity is the production path (no secrets in the app).
 """
 from __future__ import annotations
 
@@ -27,7 +27,7 @@ class AzureOpenAIReasoner:
         if self._s.azure_openai_api_key:
             h["api-key"] = self._s.azure_openai_api_key
         else:
-            # Entra managed identity — no secret in the app
+            # Entra managed identity - no secret in the app
             from azure.identity import DefaultAzureCredential
 
             token = DefaultAzureCredential().get_token(
@@ -53,11 +53,11 @@ class AzureOpenAIReasoner:
             "messages": messages,
             "max_completion_tokens": self._s.azure_openai_max_completion_tokens,
             "reasoning_effort": self._s.azure_openai_reasoning_effort,
-            # NOTE: no temperature — GPT-5.x reasoning models reject it.
+            # NOTE: no temperature - GPT-5.x reasoning models reject it.
         }
         for attempt in range(max_retries):
             r = httpx.post(url, headers=self._headers(), json=body, timeout=180.0)
-            if r.status_code in (429, 503):     # TPM/RPM quota or transient — back off
+            if r.status_code in (429, 503):     # TPM/RPM quota or transient - back off
                 retry_after = r.headers.get("retry-after")
                 wait = float(retry_after) if retry_after else min(2**attempt, 30)
                 time.sleep(wait)
@@ -65,7 +65,7 @@ class AzureOpenAIReasoner:
             r.raise_for_status()
             return r.json()["choices"][0]["message"]["content"] or ""
         raise RuntimeError(
-            f"Azure OpenAI: exhausted {max_retries} retries on 429/503 (TPM quota — "
+            f"Azure OpenAI: exhausted {max_retries} retries on 429/503 (TPM quota - "
             "raise the deployment capacity or reduce request size)")
 
 
@@ -80,7 +80,7 @@ class KeywordReasoner:
     """Deterministic offline reasoner: emits the vulnerability categories whose
     pre-registered cues appear in the prompt. With the closed/open prompt skeleton this
     makes open-book (evidence-rich prompt) ground on real cues while closed-book (bare
-    decision text) stays sparse — so the open/closed contrast runs with no Azure/network,
+    decision text) stays sparse - so the open/closed contrast runs with no Azure/network,
     for local boot and the demo. The production path uses AzureOpenAIReasoner (GPT-5.x)."""
 
     def complete(self, prompt: str, *, system: str | None = None) -> str:

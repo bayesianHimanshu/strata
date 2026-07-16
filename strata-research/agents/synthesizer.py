@@ -1,23 +1,3 @@
-"""EvidenceGapSynthesizer — Arm A (Phase 2 tail / Phase 3 entry).
-
-Runs the vulnerability synthesizer in two first-class modes (invariant #3):
-
-  * open-book   — retrieves from the index under a RetrievalBoundary (date cutoff +
-                  dossier/sibling exclusion) and emits GROUNDED Vulnerabilities, each
-                  carrying a Claim with provenance (invariant #1);
-  * closed-book — retrieval disabled; emits ungrounded Predictions from parametric
-                  memory only. This is the control: open − closed = attributable signal.
-
-The actual reasoning is delegated to an injectable `Reasoner`. The PoV ships a
-deterministic `KeywordReasoner` (cue-based, no LLM, no network) so the pipeline,
-the boundary enforcement, and the rubric gating are all testable offline; a real
-LLM-backed reasoner is a drop-in replacement implementing the same Protocol.
-
-Isolation (invariant #5): this module imports the read-only rubric (eval.rubric) but
-NOTHING from agents.decision_miner. Gold path and prediction path do not share state.
-Every run is gated by `assert_rubric_committed()` — the rubric must be pre-registered
-and unchanged before a synthesizer run is permitted (invariant #6).
-"""
 from __future__ import annotations
 
 from dataclasses import dataclass, field
@@ -31,11 +11,6 @@ from index.boundary import RetrievalBoundary
 from index.store import VectorStore
 
 Mode = Literal["open", "closed"]
-
-
-# --------------------------------------------------------------------------- #
-# Reasoner seam
-# --------------------------------------------------------------------------- #
 
 
 class Reasoner(Protocol):
@@ -72,9 +47,7 @@ class KeywordReasoner:
     yielding a deliberately weak parametric baseline.
     """
 
-    def open_book(
-        self, decision: Decision, claims: list[Claim]
-    ) -> list[Vulnerability]:
+    def open_book(self, decision: Decision, claims: list[Claim]) -> list[Vulnerability]:
         best: dict[VulnCategory, Claim] = {}
         for claim in claims:
             for cat in _categories_in(claim.text):
@@ -102,11 +75,6 @@ class KeywordReasoner:
         ]
 
 
-# --------------------------------------------------------------------------- #
-# Result
-# --------------------------------------------------------------------------- #
-
-
 @dataclass(frozen=True)
 class SynthesisResult:
     decision_id: str
@@ -129,11 +97,6 @@ def attributable_signal(
     """open − closed: the categories the system found WITH evidence that it did not
     already produce from parametric memory. The headline of Arm A."""
     return open_result.predicted_pairs() - closed_result.predicted_pairs()
-
-
-# --------------------------------------------------------------------------- #
-# Synthesizer
-# --------------------------------------------------------------------------- #
 
 
 @dataclass
@@ -184,11 +147,9 @@ class EvidenceGapSynthesizer:
 
         raise ValueError(f"unknown mode {mode!r} (expected 'open' or 'closed')")
 
-    def _retrieve(
-        self, decision: Decision, boundary: RetrievalBoundary
-    ) -> list[Claim]:
+    def _retrieve(self, decision: Decision, boundary: RetrievalBoundary) -> list[Claim]:
         """Pooled per-category retrieval under the boundary, deduped by source span.
-        The boundary is the only thing that can admit a chunk — there is no retrieval
+        The boundary is the only thing that can admit a chunk - there is no retrieval
         path that bypasses it (invariant #2 + Task 1)."""
         pooled: dict[tuple[str, int, int], Claim] = {}
         for cues in CATEGORY_CUES.values():

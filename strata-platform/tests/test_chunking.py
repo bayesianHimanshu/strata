@@ -16,7 +16,7 @@ def test_breadcrumb_prefix_and_metadata_propagation() -> None:
     )
     assert chunks
     c = chunks[0]
-    assert c.text.startswith("[TA1:guidance › Drug X for cancer › Recommendations]")
+    assert c.text.startswith("[TA1:guidance > Drug X for cancer > Recommendations]")
     assert "ICER" in c.text
     assert c.doc_type == DocType.ta_final_guidance
     assert c.appraisal_id == "TA1" and c.drug == "drugx"

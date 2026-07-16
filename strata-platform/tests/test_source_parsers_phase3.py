@@ -69,7 +69,7 @@ def test_parse_label_docs_text_and_date() -> None:
                 "warnings_and_cautions": ["Immune-mediated adverse reactions."],
                 "effective_time": "20240315",
             },
-            {"openfda": {}, "effective_time": "20240101"},  # no text → dropped
+            {"openfda": {}, "effective_time": "20240101"},  # no text -> dropped
         ]
     }
     docs = parse_label_docs(payload)

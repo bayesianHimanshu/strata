@@ -1,17 +1,17 @@
 """FAERS ingestion for the safety-signal capability.
 
 openFDA's drug/event reactions are ALREADY MedDRA-coded (``reactionmeddrapt``), so the
-signal layer computes disproportionality directly over FAERS — no intake/extraction/coding
+signal layer computes disproportionality directly over FAERS - no intake/extraction/coding
 pipeline is needed. This parses openFDA event reports into the normalised
 ``faers_report`` / ``faers_drug`` / ``faers_reaction`` rows the ``vw_signal_metrics`` view
-consumes. The parser is pure; ingestion fetches a scoped slice (FAERS is large — full
+consumes. The parser is pure; ingestion fetches a scoped slice (FAERS is large - full
 history is the production step) and upserts idempotently.
 """
 from __future__ import annotations
 
 from strata_platform.sources.dates import normalize_date
 
-# openFDA drugcharacterization → role
+# openFDA drugcharacterization -> role
 _ROLE = {"1": "suspect", "2": "concomitant", "3": "interacting"}
 
 

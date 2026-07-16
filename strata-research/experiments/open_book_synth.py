@@ -1,19 +1,3 @@
-"""Open-book synthesizer adapter (Phase 2 Task 3.2).
-
-`make_synthesizer()` returns the object `experiments/run_open_book.py` calls:
-`predict_open_book(ProbeDecision, *, buffer_days) -> set[str]`.
-
-CRITICAL (the spec's whole point): the reasoner is the SAME GPT-5.5 `OpenAIReasoner`
-the closed-book run uses, and the prompt is the SAME closed-book system+user prompt
-— open-book only ADDS the retrieved evidence as grounding context. So the open−closed
-delta is attributable to retrieval alone, not to a different model or prompt.
-
-Grounding = precision. A category GPT predicts is emitted ONLY if a retrieved chunk
-(admitted under the RetrievalBoundary) supports it; otherwise it is dropped. That is
-the mechanism by which retrieval can raise precision over the prior-saturated closed
-book. Every emitted Vulnerability carries the supporting chunk as its Claim
-(invariant #1).
-"""
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -64,7 +48,7 @@ def _evidence_block(claims: list[Claim]) -> str:
 
 def _ground(category: VulnCategory, claims: list[Claim]) -> Claim | None:
     """The retrieved claim that best supports `category`: highest-scoring chunk whose
-    text contains one of the category's pre-registered cues. None → not grounded."""
+    text contains one of the category's pre-registered cues. None -> not grounded."""
     cues = CATEGORY_CUES.get(category, ())
     matching = [c for c in claims if any(q in c.text.lower() for q in cues)]
     return max(matching, key=lambda c: c.retrieval_score) if matching else None
@@ -126,7 +110,9 @@ class OpenBookSynthesizer:
     synth: EvidenceGapSynthesizer
     sibling_map: dict[str, frozenset[str]]
 
-    def predict_open_book(self, decision: ProbeDecision, *, buffer_days: int) -> set[str]:
+    def predict_open_book(
+        self, decision: ProbeDecision, *, buffer_days: int
+    ) -> set[str]:
         core = Decision(
             agency=decision.agency,
             decision_id=decision.decision_id,

@@ -1,4 +1,4 @@
-"""DB-backed job store round-trips Job ⇄ JobRow (offline, SQLite — only the jobs table)."""
+"""DB-backed job store round-trips Job ⇄ JobRow (offline, SQLite - only the jobs table)."""
 from __future__ import annotations
 
 from datetime import date

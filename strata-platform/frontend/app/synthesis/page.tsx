@@ -60,7 +60,7 @@ function Para({ p, claims }: { p: NarrativeParagraph; claims: EvidenceClaim[] })
             const c = byId[id];
             return (
               <div className="src" key={id}>
-                {c ? `${c.text} — [${(c.provenance?.source_ids ?? []).join(", ")}]` : id}
+                {c ? `${c.text} - [${(c.provenance?.source_ids ?? []).join(", ")}]` : id}
               </div>
             );
           })}
@@ -137,7 +137,7 @@ export default function Synthesis() {
           <button className="btn" onClick={run} disabled={running || !sel}>
             {running ? "Synthesising…" : "Run synthesis"}
           </button>
-          {running && <span className="spinner" style={{ marginLeft: 12 }}>extract → gate → compose…</span>}
+          {running && <span className="spinner" style={{ marginLeft: 12 }}>extract -> gate -> compose…</span>}
         </div>
         {err && <div className="note" style={{ color: "var(--excluded)" }}>{err}</div>}
       </div>

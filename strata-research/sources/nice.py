@@ -1,15 +1,3 @@
-"""NICE cancer-appraisal recommendations client (primary gold source).
-
-No clean JSON API: locate the cancer-recommendations spreadsheet on the page and
-parse it into Decision rows. Written defensively because NICE rearranges URLs and
-columns. The xlsx-link finder, the recommendation classifier, the column
-detectors, and the workbook parser are all pure functions, unit-tested without the
-network.
-
-This module is the SINGLE parser for the NICE workbook. The Phase 0 probe must
-call parse_workbook_detailed here rather than reimplementing the loop — duplicating
-it is how the column-detection fix silently failed to take effect.
-"""
 from __future__ import annotations
 
 import io
@@ -40,7 +28,7 @@ _REC_PATTERNS: list[tuple[str, str]] = [
     ("recommended", r"recommend"),
 ]
 
-# Outcomes that signal a restricted / negative committee position — the slice that
+# Outcomes that signal a restricted / negative committee position - the slice that
 # carries the most evidence-gap signal for Arm A.
 NEGATIVE_OUTCOMES = frozenset(
     {"not_recommended", "optimised", "non_submission", "only_in_research"}
@@ -62,7 +50,7 @@ def classify_recommendation(text: str) -> str:
 
 
 def looks_like_xlsx(b: bytes) -> bool:
-    """xlsx/xlsm are zip containers — guard against HTML/redirect pages being fed
+    """xlsx/xlsm are zip containers - guard against HTML/redirect pages being fed
     to openpyxl (the InvalidFileException failure mode)."""
     return b[:4] == b"PK\x03\x04"
 
@@ -78,15 +66,15 @@ def find_xlsx_url(html: str, base: str = NICE_CANCER_PAGE) -> str | None:
     return None
 
 
-# --------------------------------------------------------------------------- #
-# Column detection — value-based, not header-name-based.
+
+# Column detection - value-based, not header-name-based.
 #
 # Header-name matching collided (a header like "Date recommendation issued"
 # matches both the date and recommendation patterns, resolving them to the same
 # column). Detect by what the cells ACTUALLY contain: the date column is the one
 # whose values parse as dates; the recommendation column is the one whose values
-# classify to a known outcome. The two can never collide — different predicates.
-# --------------------------------------------------------------------------- #
+# classify to a known outcome. The two can never collide - different predicates.
+
 
 def _argmax_col(body: list[tuple], scorer) -> int | None:
     if not body:
@@ -113,7 +101,7 @@ def parse_workbook_detailed(xbytes: bytes) -> tuple[list[Decision], dict]:
     """Parse the workbook into (dated Decision rows, diagnostics).
 
     Diagnostics carry total_rows, undated count, detected column indices, and the
-    recommendation breakdown over ALL non-empty rows — everything the Phase 0
+    recommendation breakdown over ALL non-empty rows - everything the Phase 0
     feasibility report needs, so the probe never has to reparse. Date and
     recommendation columns are detected by cell content, so column reordering or
     header-name overlap cannot misalign them.
@@ -122,7 +110,7 @@ def parse_workbook_detailed(xbytes: bytes) -> tuple[list[Decision], dict]:
 
     if not looks_like_xlsx(xbytes):
         raise RuntimeError(
-            "NICE download is not a valid xlsx (got HTML/redirect?) — the link "
+            "NICE download is not a valid xlsx (got HTML/redirect?) - the link "
             "finder matched a non-file URL or the page is gated"
         )
 
@@ -171,7 +159,7 @@ def parse_workbook_detailed(xbytes: bytes) -> tuple[list[Decision], dict]:
     c_rec = detect_rec_col(body)
     if c_date is None:
         raise RuntimeError(
-            "could not detect a date column in the NICE workbook — inspect the "
+            "could not detect a date column in the NICE workbook - inspect the "
             "sheet; leakage stratification cannot proceed without dates"
         )
 
@@ -215,7 +203,7 @@ def parse_workbook_detailed(xbytes: bytes) -> tuple[list[Decision], dict]:
     
     if len(body) and undated > 0.5 * len(body):
         raise RuntimeError(
-            f"{undated}/{len(body)} NICE rows undated — date column (idx {c_date}) "
+            f"{undated}/{len(body)} NICE rows undated - date column (idx {c_date}) "
             f"misdetected or dates not parsing; check normalize_date / cell format"
         )
 
@@ -241,7 +229,7 @@ def parse_workbook(xbytes: bytes) -> list[Decision]:
 
 def resolve_clean_arm(decisions: list[Decision], cutoff: date = MODEL_CUTOFF) -> dict:
     """Exact pre/post-cutoff stratification once per-TA day-resolution dates exist
-    (invariant #4). Post-cutoff = decision_date strictly after the model cutoff —
+    (invariant #4). Post-cutoff = decision_date strictly after the model cutoff -
     the leakage-clean Arm A test set; the restricted slice carries the gap signal."""
     post = [d for d in decisions if d.decision_date > cutoff]
     pre = [d for d in decisions if d.decision_date <= cutoff]
@@ -266,7 +254,7 @@ def _get_with_retry(
     headers: dict[str, str] | None = None,
 ) -> httpx.Response:
     """GET with exponential backoff on 429 and 5xx. The NICE page 502'd in Phase 0
-    while the asset host stayed up — so callers prefer the known asset URL and lean
+    while the asset host stayed up - so callers prefer the known asset URL and lean
     on this for the transient page fetches."""
     last: httpx.Response | None = None
     for attempt in range(retries):

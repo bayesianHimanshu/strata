@@ -33,17 +33,17 @@ TA1119  2026-01-07  Venetoclax with obinutuzumab
 TA1127  2026-02-04  Nivolumab with chemotherapy
   eligible: 0  {}
   gold=['trial_design_bias']
-  open missed (closed got these, open lost): —
+  open missed (closed got these, open lost): -
 
 TA1129  2026-02-12  Niraparib
   eligible: 3  {'literature': 3}
   gold=['trial_design_bias']
-  open missed (closed got these, open lost): —
+  open missed (closed got these, open lost): -
 
 TA1130  2026-02-11  Talazoparib with enzalutamide
   eligible: 0  {}
   gold=[]
-  open missed (closed got these, open lost): —
+  open missed (closed got these, open lost): -
 
 TA1133  2026-02-18  Belantamab mafodotin with pomalidomide and dexamethasone
   eligible: 0  {}
@@ -53,12 +53,12 @@ TA1133  2026-02-18  Belantamab mafodotin with pomalidomide and dexamethasone
 TA1136  2026-02-25  Bevacizumab (originator and biosimilars)
   eligible: 0  {}
   gold=['icer_uncertainty']
-  open missed (closed got these, open lost): —
+  open missed (closed got these, open lost): -
 
 TA1138  2026-03-02  Durvalumab with gemcitabine and cisplatin
   eligible: 0  {}
   gold=['icer_uncertainty', 'trial_design_bias']
-  open missed (closed got these, open lost): —
+  open missed (closed got these, open lost): -
 
 TA1139  2026-03-11  Epcoritamab
   eligible: 0  {}
@@ -68,7 +68,7 @@ TA1139  2026-03-11  Epcoritamab
 TA1145  2026-04-21  Pembrolizumab
   eligible: 50  {'ta_final_guidance': 11, 'literature': 37, 'trial_registry': 2}
   gold=[]
-  open missed (closed got these, open lost): —
+  open missed (closed got these, open lost): -
 
 TA1146  2026-04-28  Ripretinib
   eligible: 44  {'literature': 37, 'label': 7}
@@ -83,12 +83,12 @@ TA1147  2026-04-29  Vorasidenib
 TA1149  2026-04-30  Belantamab mafodotin with bortezomib and dexamethasone
   eligible: 0  {}
   gold=['surrogate_endpoint_immaturity', 'trial_design_bias']
-  open missed (closed got these, open lost): —
+  open missed (closed got these, open lost): -
 
 TA1150  2026-05-06  Encorafenib with binimetinib
   eligible: 0  {}
   gold=['trial_design_bias']
-  open missed (closed got these, open lost): —
+  open missed (closed got these, open lost): -
 
 TA1153  2026-05-07  Zanidatamab
   eligible: 7  {'literature': 2, 'label': 5}
@@ -98,7 +98,7 @@ TA1153  2026-05-07  Zanidatamab
 TA1156  2026-05-21  Osimertinib
   eligible: 57  {'ta_final_guidance': 4, 'literature': 40, 'label': 13}
   gold=['icer_uncertainty', 'surrogate_endpoint_immaturity']
-  open missed (closed got these, open lost): —
+  open missed (closed got these, open lost): -
 ======================================================================
 SUMMARY
 {
@@ -122,39 +122,39 @@ SUMMARY
   "n_focus_decisions(open_missed)": 7
 }
 ======================================================================
-FOCUS — read these: open lost recall here. Was the evidence even available?
+FOCUS - read these: open lost recall here. Was the evidence even available?
 
 ### TA1116  (Obecabtagene autoleucel)  lost: ['trial_design_bias']
     eligible pool: 7  {'literature': 7}
-    [literature 2025-08-01] [PMID:40550480 › Obecabtagene autoleucel, a novel CD19-directed CAR T-cell therapy for relapsed/refractory B-cell acute lymphoblastic leukemia: the future for reducing toxicity and T-cell exhaustion?] Title: Obecabtagene autoleucel, a novel…
-    [literature 2025-08-01] [PMID:40550480 › Obecabtagene autoleucel, a novel CD19-directed CAR T-cell therapy for relapsed/refractory B-cell acute lymphoblastic leukemia: the future for reducing toxicity and T-cell exhaustion?] hat mimics physiologic T-cell receptor …
+    [literature 2025-08-01] [PMID:40550480 > Obecabtagene autoleucel, a novel CD19-directed CAR T-cell therapy for relapsed/refractory B-cell acute lymphoblastic leukemia: the future for reducing toxicity and T-cell exhaustion?] Title: Obecabtagene autoleucel, a novel…
+    [literature 2025-08-01] [PMID:40550480 > Obecabtagene autoleucel, a novel CD19-directed CAR T-cell therapy for relapsed/refractory B-cell acute lymphoblastic leukemia: the future for reducing toxicity and T-cell exhaustion?] hat mimics physiologic T-cell receptor …
 
 ### TA1119  (Venetoclax with obinutuzumab)  lost: ['icer_uncertainty']
     eligible pool: 0  {}
-    (no eligible evidence at all — STARVATION for this decision)
+    (no eligible evidence at all - STARVATION for this decision)
 
 ### TA1133  (Belantamab mafodotin with pomalidomide and dexamethasone)  lost: ['icer_uncertainty']
     eligible pool: 0  {}
-    (no eligible evidence at all — STARVATION for this decision)
+    (no eligible evidence at all - STARVATION for this decision)
 
 ### TA1139  (Epcoritamab)  lost: ['trial_design_bias']
     eligible pool: 0  {}
-    (no eligible evidence at all — STARVATION for this decision)
+    (no eligible evidence at all - STARVATION for this decision)
 
 ### TA1146  (Ripretinib)  lost: ['icer_uncertainty']
     eligible pool: 44  {'literature': 37, 'label': 7}
-    [literature 2025-12-01] [PMID:41363834 › Long-term outcomes of ripretinib versus sunitinib in Chinese patients with advanced gastrointestinal stromal tumor: An updated analysis of a phase 2 randomized clinical trial.] Title: Long-term outcomes of ripretinib versus…
-    [literature 2025-12-01] [PMID:41363834 › Long-term outcomes of ripretinib versus sunitinib in Chinese patients with advanced gastrointestinal stromal tumor: An updated analysis of a phase 2 randomized clinical trial.] atients randomized, 54 received ripretinib and…
+    [literature 2025-12-01] [PMID:41363834 > Long-term outcomes of ripretinib versus sunitinib in Chinese patients with advanced gastrointestinal stromal tumor: An updated analysis of a phase 2 randomized clinical trial.] Title: Long-term outcomes of ripretinib versus…
+    [literature 2025-12-01] [PMID:41363834 > Long-term outcomes of ripretinib versus sunitinib in Chinese patients with advanced gastrointestinal stromal tumor: An updated analysis of a phase 2 randomized clinical trial.] atients randomized, 54 received ripretinib and…
 
 ### TA1147  (Vorasidenib)  lost: ['icer_uncertainty']
     eligible pool: 25  {'literature': 25}
-    [literature 2026-01-28] [PMID:41604034 › Reasons driving choice and clinical course of patients with CNS WHO grade 3 IDH mutant glioma receiving vorasidenib after surgery: a pilot experience.] Title: Reasons driving choice and clinical course of patients with CNS …
-    [literature 2026-01-28] [PMID:41604034 › Reasons driving choice and clinical course of patients with CNS WHO grade 3 IDH mutant glioma receiving vorasidenib after surgery: a pilot experience.] ed eligible for vorasidenib at the dose of 40 mg daily within the drug …
+    [literature 2026-01-28] [PMID:41604034 > Reasons driving choice and clinical course of patients with CNS WHO grade 3 IDH mutant glioma receiving vorasidenib after surgery: a pilot experience.] Title: Reasons driving choice and clinical course of patients with CNS …
+    [literature 2026-01-28] [PMID:41604034 > Reasons driving choice and clinical course of patients with CNS WHO grade 3 IDH mutant glioma receiving vorasidenib after surgery: a pilot experience.] ed eligible for vorasidenib at the dose of 40 mg daily within the drug …
 
 ### TA1153  (Zanidatamab)  lost: ['trial_design_bias']
     eligible pool: 7  {'literature': 2, 'label': 5}
-    [literature 2025-06-03] [PMID:40319675 › Real-world efficacy of zanidatamab in patients with HER2 positive advanced biliary tract cancers.] Title: Real-world efficacy of zanidatamab in patients with HER2 positive advanced biliary tract cancers. Abstract: In the HE…
-    [literature 2025-06-03] [PMID:40319675 › Real-world efficacy of zanidatamab in patients with HER2 positive advanced biliary tract cancers.] onths, with an estimated OS at 1 year of 79.1 % (95 % CI: 53.2-91.6 %). The DCR was 65 %, with 40 % confirmed partial respon…
+    [literature 2025-06-03] [PMID:40319675 > Real-world efficacy of zanidatamab in patients with HER2 positive advanced biliary tract cancers.] Title: Real-world efficacy of zanidatamab in patients with HER2 positive advanced biliary tract cancers. Abstract: In the HE…
+    [literature 2025-06-03] [PMID:40319675 > Real-world efficacy of zanidatamab in patients with HER2 positive advanced biliary tract cancers.] onths, with an estimated OS at 1 year of 79.1 % (95 % CI: 53.2-91.6 %). The DCR was 65 %, with 40 % confirmed partial respon…
 
 ======================================================================
 READ:

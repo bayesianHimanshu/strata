@@ -3,7 +3,7 @@
 Frozen here before any scored run: the taxonomy (VulnCategory), CATEGORY_CUES (the cue
 lexicon the grounding gate keys on), and the MATCH_RULE. The whole thing is content-hashed
 (``rubric_hash``) and the hash committed to ``rubric.lock``. ``assert_rubric_committed()``
-refuses to proceed if the live rubric has drifted from the committed hash — a post-hoc edit
+refuses to proceed if the live rubric has drifted from the committed hash - a post-hoc edit
 cannot silently change scoring. A real change is a new RUBRIC_VERSION with a freshly
 committed hash, never an edit in place.
 

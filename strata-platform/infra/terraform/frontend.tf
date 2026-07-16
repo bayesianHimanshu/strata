@@ -1,5 +1,5 @@
 ###############################################################################
-# Frontend — Next.js UI as its own Container App.
+# Frontend - Next.js UI as its own Container App.
 # Build & push a separate image (frontend/Dockerfile) to the same ACR, then set
 # var.frontend_image. It is given the API's internal/ingress URL at runtime.
 ###############################################################################

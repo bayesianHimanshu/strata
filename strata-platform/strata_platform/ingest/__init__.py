@@ -1,5 +1,5 @@
 """Ingestion: gather drug-scoped, leakage-date-filtered public evidence for a decision,
-chunk it (structure_aware_prefixed), embed it, and write it to the retrieval store —
+chunk it (structure_aware_prefixed), embed it, and write it to the retrieval store -
 guarded by a fail-loud health gate so a blob / wrong-drug / empty-literature corpus can
 never silently produce a fake retrieval result.
 """

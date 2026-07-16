@@ -1,17 +1,3 @@
-"""Invariant #2 — temporal leakage control, enforced in code.
-
-For any decision D, the retrieval corpus admits only documents with
-    doc_date < D.decision_date - buffer
-This is a HARD filter. Two deliberate strictnesses:
-
-  * The comparison is strict `<`: a document dated exactly at the cutoff is rejected.
-  * A document with no `doc_date` is rejected. If we cannot prove a document predates
-    the decision, we must assume it does not — undatable evidence cannot be admitted
-    without risking leakage (this also keeps invariant #1 honest downstream).
-
-The filter is pure and total; `index.store` calls it as a mandatory pre-filter so a
-leaky query is unrepresentable. Tests assert the boundary behavior directly.
-"""
 from __future__ import annotations
 
 from collections.abc import Iterable

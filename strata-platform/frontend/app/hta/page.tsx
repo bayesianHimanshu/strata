@@ -53,12 +53,12 @@ function Column({ job, mode }: { job: Job | null; mode: "closed" | "open" }) {
         <div className="mode">{mode === "closed" ? "Closed book" : "Open book"}</div>
         <div className="sub">
           {mode === "closed"
-            ? "parametric — no retrieval, the model's prior alone"
-            : "grounded — retrieval under the leakage boundary"}
+            ? "parametric - no retrieval, the model's prior alone"
+            : "grounded - retrieval under the leakage boundary"}
         </div>
       </header>
       <div className="body">
-        {!job && <span className="empty">—</span>}
+        {!job && <span className="empty">-</span>}
         {job && vulns.length === 0 && (
           <span className="empty">No concerns asserted.</span>
         )}
@@ -122,7 +122,7 @@ export default function HTA() {
         <h1 style={{ fontSize: 30 }}>HTA Archaeology</h1>
         <p>
           Pick an appraisal and run it both ways. Watch the model go from reciting the
-          genre of concerns to asserting only what the retrieved evidence supports —
+          genre of concerns to asserting only what the retrieved evidence supports -
           each grounded claim traceable to its sources.
         </p>
       </section>

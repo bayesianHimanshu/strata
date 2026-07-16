@@ -1,4 +1,4 @@
-"""Invariant #2 — the experiment dies if this regresses.
+"""Invariant #2 - the experiment dies if this regresses.
 
 For decision D: admit doc iff doc_date is known AND doc_date < D.decision_date - buffer.
 Strict `<`; undated rejected; buffer respected.

@@ -76,7 +76,7 @@ export default function ContextPanel({
         kind, value, drug: decision.drug, indication: decision.indication,
         doc_date: mode === "live" ? asOf : decision.decision_date, filename,
       });
-      setMsg(`Added ${r.doc_type} source (${r.chunks} chunks) — re-run to see it cited.`);
+      setMsg(`Added ${r.doc_type} source (${r.chunks} chunks) - re-run to see it cited.`);
       setUrl(""); setText(""); refreshStatus();
     } catch (e) {
       setMsg(String(e));

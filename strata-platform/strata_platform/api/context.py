@@ -6,7 +6,7 @@ progress, add user-supplied sources inline, and report indexed status.
     POST /context/add       {kind:url|text|file, value, drug, indication, doc_date} -> ingested
     GET  /context/status    ?drug= -> {indexed_chunks, by_source, freshness}
 
-The capability flow stays caller-orchestrated: ingest → on complete → run the capability
+The capability flow stays caller-orchestrated: ingest -> on complete -> run the capability
 with params.mode/as_of. No capability needs to know about connectors.
 """
 from __future__ import annotations

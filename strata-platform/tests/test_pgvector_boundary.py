@@ -3,9 +3,9 @@
 InMemoryStore enforces ``boundary.admits`` directly. PgVectorStore compiles the SAME gate
 to a SQL WHERE via ``boundary_sql_filter``. This test runs that compiled WHERE on an
 in-memory SQLite table over the four canonical boundary cases and asserts the admitted set
-is IDENTICAL to ``boundary.admits`` — so leakage is impossible on the production backend
+is IDENTICAL to ``boundary.admits`` - so leakage is impossible on the production backend
 too, proven with no live Postgres. (pgvector's ``<=>`` ordering is Postgres-only and is
-exercised separately against a live DB; the WHERE — where leakage lives — is dialect-
+exercised separately against a live DB; the WHERE - where leakage lives - is dialect-
 neutral and tested here.)
 """
 from __future__ import annotations

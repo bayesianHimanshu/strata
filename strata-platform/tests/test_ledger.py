@@ -40,7 +40,7 @@ def test_record_sources_is_idempotent_on_digest() -> None:
     with sm() as s:
         assert record_sources(s, [rec]) == 1
     with sm() as s:
-        assert record_sources(s, [rec]) == 0  # same digest → no duplicate
+        assert record_sources(s, [rec]) == 0  # same digest -> no duplicate
         rows = s.execute(select(SourceRecordRow)).scalars().all()
         assert len(rows) == 1 and rows[0].doc_type == "literature"
 

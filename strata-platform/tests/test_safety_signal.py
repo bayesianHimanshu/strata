@@ -1,5 +1,5 @@
 """Safety-Signal Surveillance (VIGIL port): disproportionality math, the deny-by-default
-SQL guard, and the guarded text-to-SQL → grounded summary flow (no network)."""
+SQL guard, and the guarded text-to-SQL -> grounded summary flow (no network)."""
 from __future__ import annotations
 
 import json
@@ -26,7 +26,7 @@ def test_prr_ror_signal_flag_on_fixed_2x2() -> None:
     assert prr == 7.2          # (8/100) / (10/900)
     assert ror == 7.739        # (8*890) / (92*10)
     assert flag is True        # prr>=2 and a>=3
-    assert _metrics(2, 98, 10, 890)[2] is False      # a<3 → not a signal
+    assert _metrics(2, 98, 10, 890)[2] is False      # a<3 -> not a signal
 
 
 # --- 2. sql_guard (deny-by-default) -------------------------------------------------- #
@@ -108,7 +108,7 @@ def test_requires_question() -> None:
                                  reasoner=FakeReasoner("SELECT 1"), store=None)
 
 
-# --- 4. FAERS parser (openFDA event payload → normalised rows) ----------------------- #
+# --- 4. FAERS parser (openFDA event payload -> normalised rows) ----------------------- #
 
 def test_parse_faers_results() -> None:
     from strata_platform.context.faers import parse_faers_results

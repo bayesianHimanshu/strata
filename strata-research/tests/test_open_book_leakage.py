@@ -1,7 +1,7 @@
-"""Phase 2 Task 3 — open-book retrieval leakage correctness (offline, fixtures).
+"""Phase 2 Task 3 - open-book retrieval leakage correctness (offline, fixtures).
 
 The four binding checks: dossier-disjointness, date cutoff, the INVERSE check (a
-legitimate public ICER doc IS retrieved — so we can tell "boundary excludes the
+legitimate public ICER doc IS retrieved - so we can tell "boundary excludes the
 dossier" apart from "boundary excludes the category"), and the sibling policy toggle.
 We inspect the EXACT chunks the synthesizer's retrieval surfaced via a recording
 reasoner, so these test the real retrieval path the GPT adapter uses.
@@ -20,7 +20,7 @@ from index.store import Chunk, InMemoryStore, structure_aware_prefixed_chunks
 TARGET = Decision(
     agency="NICE",
     decision_id="TA100",
-    decision_date=date(2026, 6, 1),  # buffer 90d → cutoff 2026-03-03
+    decision_date=date(2026, 6, 1),  # buffer 90d -> cutoff 2026-03-03
     indication="lung cancer",
     outcome="not_recommended",
     drug="drugx",
@@ -45,7 +45,7 @@ def _add(
 
 def _store() -> InMemoryStore:
     s = InMemoryStore()
-    # TA100's OWN dossier — gold-bearing, pre-cutoff date would otherwise admit it.
+    # TA100's OWN dossier - gold-bearing, pre-cutoff date would otherwise admit it.
     _add(s, sid="TA100:guidance", appraisal_id="TA100",
          doc_type=DocType.ta_final_guidance, doc_date=date(2026, 1, 1),
          text="The committee found the ICER highly uncertain and the comparator did "
@@ -62,7 +62,7 @@ def _store() -> InMemoryStore:
     _add(s, sid="PMID:3", appraisal_id=None, doc_type=DocType.literature,
          doc_date=date(2025, 7, 1),
          text="The comparator did not reflect NHS clinical practice in this study.")
-    # Public doc dated AFTER the cutoff — must never be retrieved.
+    # Public doc dated AFTER the cutoff - must never be retrieved.
     _add(s, sid="PMID:2", appraisal_id=None, doc_type=DocType.literature,
          doc_date=date(2026, 5, 1),
          text="A later analysis of the ICER and the comparator.")
@@ -155,7 +155,7 @@ def _decisions_file(tmp_path: Path) -> str:
          "drug": "drugx", "appraisal_id": "TA100"},
         {"agency": "NICE", "decision_id": "TA050", "decision_date": "2025-01-01",
          "indication": "lung cancer", "outcome": "optimised",
-         "drug": "drugx", "appraisal_id": "TA050"},  # same drug → sibling of TA100
+         "drug": "drugx", "appraisal_id": "TA050"},  # same drug -> sibling of TA100
     ]
     path = tmp_path / "decisions.json"
     path.write_text(json.dumps(rows))
@@ -179,4 +179,4 @@ def test_predict_open_book_emits_only_grounded_categories(tmp_path: Path) -> Non
     cats = synth.predict_open_book(probe, buffer_days=90)
     assert "icer_uncertainty" in cats  # grounded by PMID:1
     assert "comparator" in cats  # grounded by PMID:3
-    assert "missing_pro" not in cats  # no retrieved chunk supports it → dropped
+    assert "missing_pro" not in cats  # no retrieved chunk supports it -> dropped

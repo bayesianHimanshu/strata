@@ -1,4 +1,4 @@
-"""Provenance ledger — the append-only record of every byte ingested.
+"""Provenance ledger - the append-only record of every byte ingested.
 
 Each ``SourceRecord`` becomes a ``SourceRecordRow`` keyed by its content SHA-256 (the
 ALCOA+ audit substrate, 21 CFR Part 11). Writes are idempotent on the digest. Reads verify

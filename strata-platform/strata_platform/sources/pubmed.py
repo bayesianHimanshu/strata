@@ -6,7 +6,7 @@ against fixture payloads; the network methods are thin wrappers.
 
 Two hard-won lessons carried over:
   (a) a hard ``AND (cost-effectiveness OR HTA OR …)`` clause returns ZERO for newer
-      drugs with no HEOR papers yet — so the HTA/HEOR terms are a *soft boost* and the
+      drugs with no HEOR papers yet - so the HTA/HEOR terms are a *soft boost* and the
       corpus builder relaxes to ``molecule`` alone (recency-capped) on an empty result.
       Here we surface a zero count; swallowing it silently is forbidden.
   (b) an NCBI API key raises throughput from ~3 to ~10 req/s; it is sent as ``api_key``
@@ -77,7 +77,7 @@ def _month(raw: str | None) -> int:
 
 
 def _pub_date(pubdate: ET.Element | None) -> date | None:
-    """A PubDate element → date. Handles Year/Month/Day and MedlineDate ('2024 Mar')."""
+    """A PubDate element -> date. Handles Year/Month/Day and MedlineDate ('2024 Mar')."""
     if pubdate is None:
         return None
     year = pubdate.findtext("Year")
@@ -153,7 +153,7 @@ class PubMedClient:
         mindate: str | None = None, maxdate: str | None = None,
     ) -> tuple[SearchResult, SourceRecord]:
         params: dict = {"db": "pubmed", "term": term, "retmode": "json", "retmax": retmax}
-        if sort:  # e.g. "pub_date" — newest first, for the recency-capped fallback
+        if sort:  # e.g. "pub_date" - newest first, for the recency-capped fallback
             params["sort"] = sort
         if mindate and maxdate:  # EDAT leakage window
             params.update({"datetype": "edat", "mindate": mindate, "maxdate": maxdate})
@@ -175,7 +175,7 @@ class PubMedClient:
     def fetch_abstracts(
         self, pmids: list[str]
     ) -> tuple[list[Abstract], SourceRecord]:
-        """efetch the given PMIDs → Abstract records + a content-addressed snapshot."""
+        """efetch the given PMIDs -> Abstract records + a content-addressed snapshot."""
         if not pmids:
             raise ValueError("fetch_abstracts requires at least one PMID")
         self._throttle()

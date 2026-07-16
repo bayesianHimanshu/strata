@@ -33,5 +33,5 @@ def test_related_text_more_similar_than_unrelated() -> None:
 
 
 def test_get_embedder_defaults_to_hashing_offline() -> None:
-    # No Azure endpoint configured in tests → offline hashing embedder.
+    # No Azure endpoint configured in tests -> offline hashing embedder.
     assert isinstance(get_embedder(), HashingEmbedder)

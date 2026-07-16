@@ -3,7 +3,7 @@ build_retrieval_corpus.assert_corpus_healthy).
 
 This is the guard that stopped two wasted runs. It RAISES unless the corpus is
 decision-specific (not a blob), literature actually landed, and retrieval routes to the
-right molecule — so a broken corpus can never silently produce a fake precision/recall
+right molecule - so a broken corpus can never silently produce a fake precision/recall
 delta. Operates on platform Chunks + the RetrievalBoundary (same gate as retrieval).
 """
 from __future__ import annotations
@@ -69,11 +69,11 @@ def assert_corpus_healthy(
     if comp["distinct_drugs"] <= 1 or comp["distinct_drugs"] < min_distinct_ratio * n:
         raise CorpusHealthError(
             f"blob: distinct_drugs={comp['distinct_drugs']} not ≈ n_decisions={n} "
-            f"(min {min_distinct_ratio:.0%}) — chunks are not molecule-specific"
+            f"(min {min_distinct_ratio:.0%}) - chunks are not molecule-specific"
         )
     if comp["literature_chunks"] == 0:
         raise CorpusHealthError(
-            "literature arm did not land (0 literature chunks) — check the PubMed query"
+            "literature arm did not land (0 literature chunks) - check the PubMed query"
         )
 
     store = InMemoryStore()
@@ -97,7 +97,7 @@ def assert_corpus_healthy(
 
     if n > 1 and len(pool_sigs) <= 1:
         raise CorpusHealthError(
-            "blob: every decision has an identical eligible pool — retrieval is not "
+            "blob: every decision has an identical eligible pool - retrieval is not "
             "decision-specific"
         )
     if lit_present < min_literature_ratio * n:

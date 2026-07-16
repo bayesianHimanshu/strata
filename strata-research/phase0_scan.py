@@ -1,5 +1,5 @@
 """
-STRATA Phase 0 — data-availability scan.
+STRATA Phase 0 - data-availability scan.
 
 Purpose: de-risk the PoV before any agent is built. Answers one question per source:
 "is there enough extractable, date-stamped public evidence to power the three arms?"
@@ -17,7 +17,7 @@ locked sandbox):
     python phase0_scan.py --selftest      # offline checks, no network
 
 Note on ClinicalTrials.gov: it sits behind Akamai Bot Manager, which blocks on the
-TLS handshake fingerprint (JA3/JA4) — so a browser User-Agent and a US egress are
+TLS handshake fingerprint (JA3/JA4) - so a browser User-Agent and a US egress are
 not enough. We fetch that one source with curl_cffi impersonating Chrome's TLS
 fingerprint. Everything else uses httpx.
 
@@ -38,7 +38,7 @@ from curl_cffi import requests as cffi  # browser-TLS-impersonating client (CT.g
 
 # Phase 1 promoted these primitives into core/ and sources/. Phase 0 now imports the
 # canonical implementations rather than carrying its own copies (single source of
-# truth — an auditability principle). The probes, verdict, and selftest stay here.
+# truth - an auditability principle). The probes, verdict, and selftest stay here.
 from core.config import (
     CLEAN_ARM_MIN_NEGATIVE,
     CTGOV_BASE,
@@ -56,9 +56,9 @@ from sources.nice_feasibility import nice_feasibility
 REPORT_PATH = Path("feasibility_report.json")
 
 
-# --------------------------------------------------------------------------- #
+
 # HTTP helpers
-# --------------------------------------------------------------------------- #
+
 
 
 BROWSER_UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
@@ -83,9 +83,9 @@ def _get_json(client: httpx.Client, url: str, params: dict[str, Any] | None = No
     return r.json()
 
 
-# --------------------------------------------------------------------------- #
+
 # Source probes
-# --------------------------------------------------------------------------- #
+
 
 ONCOLOGY_CONDITIONS = ["cancer", "lung cancer", "breast cancer", "prostate cancer",
                        "melanoma", "lymphoma", "multiple myeloma", "leukemia"]
@@ -190,9 +190,9 @@ def probe_nice(client, xlsx_url_override=None):
             **nice_feasibility(xbytes, MODEL_CUTOFF)}
 
 
-# --------------------------------------------------------------------------- #
+
 # Orchestration + verdict
-# --------------------------------------------------------------------------- #
+
 
 
 def verdict(nice: dict[str, Any]) -> dict[str, Any]:
@@ -230,9 +230,9 @@ def run_scan(nice_xlsx_url: str | None = None) -> dict[str, Any]:
     return report
 
 
-# --------------------------------------------------------------------------- #
+
 # Offline self-test (runs without network; verifies the invariants)
-# --------------------------------------------------------------------------- #
+
 
 
 def selftest() -> int:

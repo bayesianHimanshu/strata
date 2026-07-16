@@ -1,4 +1,4 @@
-"""Retrieval store. ``search`` REQUIRES a RetrievalBoundary — there is no unbounded search
+"""Retrieval store. ``search`` REQUIRES a RetrievalBoundary - there is no unbounded search
 method, so leakage is structurally impossible at the call site.
 
 Production backs onto pgvector (the same Postgres as the rest of the platform); the
@@ -6,7 +6,7 @@ in-memory backend keeps local boot and tests free of a live DB. The leakage boun
 the SINGLE source of truth: ``boundary_sql_filter`` compiles the very same predicates the
 in-memory ``boundary.admits`` enforces into SQLAlchemy expressions, and ``PgVectorStore``
 re-asserts ``boundary.admits`` on every returned row (defense in depth). So both backends
-admit/exclude identically — the four leakage-boundary tests pass against both.
+admit/exclude identically - the four leakage-boundary tests pass against both.
 """
 from __future__ import annotations
 
@@ -71,7 +71,7 @@ def boundary_sql_filter(cols, boundary: RetrievalBoundary) -> list:
     """Compile a RetrievalBoundary to SQLAlchemy boolean expressions over ``cols`` (the
     chunks table / ORM class exposing .doc_date, .appraisal_id, .doc_type, .drug).
 
-    This MUST mirror ``RetrievalBoundary.admits`` exactly — it is the same gate, expressed
+    This MUST mirror ``RetrievalBoundary.admits`` exactly - it is the same gate, expressed
     in SQL. ``cols.doc_type`` holds the DocType *value* (string).
     """
     clauses: list = []
@@ -185,9 +185,9 @@ class PgVectorStore:
             c = Chunk(chunk_id=r.chunk_id, text=r.text, doc_type=DocType(r.doc_type),
                       appraisal_id=r.appraisal_id, drug=r.drug, doc_date=r.doc_date,
                       source_id=r.source_id)
-            if not boundary.admits(c):  # defense in depth — nothing leaks past the gate
+            if not boundary.admits(c):  # defense in depth - nothing leaks past the gate
                 raise RuntimeError(
-                    f"PgVectorStore returned an inadmissible chunk {c.chunk_id} — "
+                    f"PgVectorStore returned an inadmissible chunk {c.chunk_id} - "
                     "SQL filter and boundary.admits disagree (leakage gate breach)"
                 )
             out.append(c)

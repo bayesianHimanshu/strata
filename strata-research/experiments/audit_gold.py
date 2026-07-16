@@ -1,24 +1,3 @@
-"""STRATA — gold audit & annotation harness (experiments/audit_gold.py).
-
-Two jobs, one artifact:
-  1. SEE the miscalibration. The manifest showed icer_uncertainty firing on 15/15
-     post decisions and comparator on 1 — almost certainly the lexicon matching the
-     mere PRESENCE of cost-effectiveness language rather than the committee citing it
-     as a problem. This harness puts each committee rationale next to the extracted
-     categories so a human can judge directly, and it quantifies the boilerplate
-     (per-category fire rate on RESTRICTED vs RECOMMENDED decisions — a category that
-     fires on approvals is matching boilerplate, not reasoning).
-  2. BUILD the second annotator vector. The emitted markdown sheet has a checkbox per
-     taxonomy category, pre-filled with the miner's choice. A human edits the boxes;
-     `score` mode parses the sheet back, computes miner-vs-human Cohen's kappa per
-     category and overall, lists disagreements, and writes the human gold vector.
-
-Modes:
-    python -m experiments.audit_gold emit --out audit/sheet.md [--seed 7] [--contrast 8]
-    python -m experiments.audit_gold score --sheet audit/sheet.md --out audit/gold.json
-
-Pure logic is string/JSON based and offline-tested; only file I/O lives in main().
-"""
 from __future__ import annotations
 
 import argparse
@@ -30,15 +9,19 @@ from pathlib import Path
 
 # In the repo: TAXONOMY = [c.value for c in VulnCategory]; NEGATIVE_OUTCOMES from
 # sources.nice. Kept as data here so the logic is testable without the package.
-DEFAULT_NEGATIVE = {"not_recommended", "optimised", "non_submission", "only_in_research"}
+DEFAULT_NEGATIVE = {
+    "not_recommended",
+    "optimised",
+    "non_submission",
+    "only_in_research",
+}
 
 _BOX = re.compile(r"^- \[([ xX])\]\s+(\w+)", re.MULTILINE)
 _HEAD = re.compile(r"^## (\S+)", re.MULTILINE)
 
 
-# --------------------------------------------------------------------------- #
 # Calibration diagnostics
-# --------------------------------------------------------------------------- #
+
 
 def calibration_diagnostics(
     decisions: list[dict],
@@ -48,7 +31,7 @@ def calibration_diagnostics(
 ) -> dict:
     """Per-category fire rate on restricted vs recommended decisions. A category
     that fires heavily on 'recommended' is matching boilerplate, not committee
-    reasoning — that is the icer/budget_impact problem in measurable form."""
+    reasoning - that is the icer/budget_impact problem in measurable form."""
     restricted = [d for d in decisions if d["outcome"] in negative]
     recommended = [d for d in decisions if d["outcome"] == "recommended"]
     out: dict[str, dict] = {}
@@ -66,9 +49,8 @@ def calibration_diagnostics(
     return out
 
 
-# --------------------------------------------------------------------------- #
 # Sampling (deterministic, stratified)
-# --------------------------------------------------------------------------- #
+
 
 def sample_decisions(
     decisions: list[dict],
@@ -78,23 +60,28 @@ def sample_decisions(
     seed: int = 7,
     contrast: int = 8,
 ) -> list[dict]:
-    """Audit ALL post-cutoff restricted decisions (the Arm A gold — and there are
+    """Audit ALL post-cutoff restricted decisions (the Arm A gold - and there are
     few), plus a contrast set of recommended decisions (to expose boilerplate),
     plus a few pre-cutoff for breadth. Deterministic."""
     rng = random.Random(seed)
     post = [d for d in decisions if d["decision_date"] > cutoff_iso]
-    post_restricted = sorted((d for d in post if d["outcome"] in negative),
-                             key=lambda d: d["decision_id"])
-    post_recommended = sorted((d for d in post if d["outcome"] == "recommended"),
-                              key=lambda d: d["decision_id"])
-    pre = sorted((d for d in decisions if d["decision_date"] <= cutoff_iso),
-                 key=lambda d: d["decision_id"])
+    post_restricted = sorted(
+        (d for d in post if d["outcome"] in negative), key=lambda d: d["decision_id"]
+    )
+    post_recommended = sorted(
+        (d for d in post if d["outcome"] == "recommended"),
+        key=lambda d: d["decision_id"],
+    )
+    pre = sorted(
+        (d for d in decisions if d["decision_date"] <= cutoff_iso),
+        key=lambda d: d["decision_id"],
+    )
 
-    chosen = list(post_restricted)                       # all of them
+    chosen = list(post_restricted)  # all of them
     rng.shuffle(post_recommended)
-    chosen += post_recommended[:contrast]                # boilerplate contrast
+    chosen += post_recommended[:contrast]  # boilerplate contrast
     rng.shuffle(pre)
-    chosen += pre[: max(0, contrast // 2)]               # breadth
+    chosen += pre[: max(0, contrast // 2)]  # breadth
     seen, ordered = set(), []
     for d in chosen:
         if d["decision_id"] not in seen:
@@ -103,9 +90,8 @@ def sample_decisions(
     return ordered
 
 
-# --------------------------------------------------------------------------- #
 # Sheet emit / parse
-# --------------------------------------------------------------------------- #
+
 
 def build_sheet(
     sampled: list[dict],
@@ -116,11 +102,11 @@ def build_sheet(
     rationale_cap: int = 4000,
 ) -> str:
     lines: list[str] = [
-        "# STRATA — gold audit sheet",
+        "# STRATA - gold audit sheet",
         "",
         "Mark `[x]` where the committee cited the category **as a problem** with the "
         "evidence. Leave `[ ]` otherwise. The `(miner: ...)` tag is the automatic "
-        "extraction — your marks are the human vector we score it against.",
+        "extraction - your marks are the human vector we score it against.",
         "",
         "## Calibration diagnostics (read first)",
         "",
@@ -130,12 +116,18 @@ def build_sheet(
     for c in taxonomy:
         d = diagnostics[c]
         _rr, _ar = d["fire_rate_restricted"], d["fire_rate_recommended"]
-        rr = "—" if _rr is None else f"{_rr:.0%}"
-        ar = "—" if _ar is None else f"{_ar:.0%}"
+        rr = "-" if _rr is None else f"{_rr:.0%}"
+        ar = "-" if _ar is None else f"{_ar:.0%}"
         flag = "⚠️ yes" if d["boilerplate_suspect"] else ""
         lines.append(f"| {c} | {rr} | {ar} | {flag} |")
-    lines += ["", "A category firing on a majority of *recommended* decisions is "
-              "matching boilerplate, not committee reasoning.", "", "---", ""]
+    lines += [
+        "",
+        "A category firing on a majority of *recommended* decisions is "
+        "matching boilerplate, not committee reasoning.",
+        "",
+        "---",
+        "",
+    ]
 
     for d in sampled:
         did = d["decision_id"]
@@ -144,12 +136,12 @@ def build_sheet(
         if len(rat) > rationale_cap:
             rat = rat[:rationale_cap] + "\n…[truncated]"
         lines += [
-            f"## {did}  —  {d.get('drug','?')} for {d.get('indication','?')}",
+            f"## {did}  -  {d.get('drug','?')} for {d.get('indication','?')}",
             f"- agency: {d.get('agency','?')} | date: {d.get('decision_date','?')} "
             f"| outcome: {d.get('outcome','?')}",
             "",
             "### Committee rationale",
-            rat or "_(empty — flag this; should not have passed the fetcher)_",
+            rat or "_(empty - flag this; should not have passed the fetcher)_",
             "",
             "### Categories",
         ]
@@ -168,18 +160,20 @@ def parse_sheet(md: str, taxonomy: list[str]) -> dict[str, set[str]]:
     blocks = re.split(r"^## ", md, flags=re.MULTILINE)
     for blk in blocks:
         m = re.match(r"(\S+)", blk)
-        if not m or "### Categories" not in blk:          # real decision blocks only
+        if not m or "### Categories" not in blk:  # real decision blocks only
             continue
         did = m.group(1)
-        checked = {tok for state, tok in _BOX.findall(blk)
-                   if state.lower() == "x" and tok in allowed}
+        checked = {
+            tok
+            for state, tok in _BOX.findall(blk)
+            if state.lower() == "x" and tok in allowed
+        }
         human[did] = checked
     return human
 
 
-# --------------------------------------------------------------------------- #
 # Agreement
-# --------------------------------------------------------------------------- #
+
 
 def cohen_kappa(a: list[int], b: list[int]) -> float | None:
     """Cohen's kappa for two equal-length label sequences (binary here)."""
@@ -213,9 +207,13 @@ def agreement(
     for d in decision_ids:
         m, h = miner.get(d, set()), human.get(d, set())
         if m != h:
-            disagreements.append({"decision_id": d,
-                                  "miner_only": sorted(m - h),
-                                  "human_only": sorted(h - m)})
+            disagreements.append(
+                {
+                    "decision_id": d,
+                    "miner_only": sorted(m - h),
+                    "human_only": sorted(h - m),
+                }
+            )
     return {
         "n_decisions": len(decision_ids),
         "kappa_overall_pooled": cohen_kappa(pooled_a, pooled_b),
@@ -224,9 +222,8 @@ def agreement(
     }
 
 
-# --------------------------------------------------------------------------- #
 # Entrypoints
-# --------------------------------------------------------------------------- #
+
 
 def _load(path: str) -> dict:
     return json.loads(Path(path).read_text())
@@ -253,20 +250,27 @@ def main() -> int:
     # taxonomy + cutoff come from the package in the real run
     from core.config import MODEL_CUTOFF  # type: ignore
     from core.contracts import VulnCategory  # type: ignore
+
     taxonomy = [c.value for c in VulnCategory]
 
     if args.mode == "emit":
         decisions = _load(args.decisions)
         gold = {k: set(v) for k, v in _load(args.gold).items()}
         diag = calibration_diagnostics(decisions, gold, taxonomy)
-        sampled = sample_decisions(decisions, cutoff_iso=MODEL_CUTOFF.isoformat(),
-                                   seed=args.seed, contrast=args.contrast)
+        sampled = sample_decisions(
+            decisions,
+            cutoff_iso=MODEL_CUTOFF.isoformat(),
+            seed=args.seed,
+            contrast=args.contrast,
+        )
         sheet = build_sheet(sampled, gold, taxonomy, diag)
         Path(args.out).parent.mkdir(parents=True, exist_ok=True)
         Path(args.out).write_text(sheet)
-        print(f"wrote {args.out} — {len(sampled)} decisions to review")
-        print("boilerplate-suspect categories:",
-              [c for c in taxonomy if diag[c]["boilerplate_suspect"]])
+        print(f"wrote {args.out} - {len(sampled)} decisions to review")
+        print(
+            "boilerplate-suspect categories:",
+            [c for c in taxonomy if diag[c]["boilerplate_suspect"]],
+        )
         return 0
 
     # score
@@ -274,11 +278,19 @@ def main() -> int:
     human = parse_sheet(Path(args.sheet).read_text(), taxonomy)
     rep = agreement(sorted(human), miner, human, taxonomy)
     Path(args.out).parent.mkdir(parents=True, exist_ok=True)
-    Path(args.out).write_text(json.dumps({k: sorted(v) for k, v in human.items()},
-                                         indent=2))
-    print(json.dumps({"kappa_overall": rep["kappa_overall_pooled"],
-                      "kappa_by_category": rep["kappa_by_category"],
-                      "n_disagreements": len(rep["disagreements"])}, indent=2))
+    Path(args.out).write_text(
+        json.dumps({k: sorted(v) for k, v in human.items()}, indent=2)
+    )
+    print(
+        json.dumps(
+            {
+                "kappa_overall": rep["kappa_overall_pooled"],
+                "kappa_by_category": rep["kappa_by_category"],
+                "n_disagreements": len(rep["disagreements"]),
+            },
+            indent=2,
+        )
+    )
     print(f"wrote human gold -> {args.out}")
     return 0
 

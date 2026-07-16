@@ -1,10 +1,10 @@
-"""Evidence Synthesis — a grounded GENERATOR on the STRATA substrate.
+"""Evidence Synthesis - a grounded GENERATOR on the STRATA substrate.
 
 Unlike HTA Archaeology (a classifier scored against gold), this produces structured
 arguments a human reads. There is no category gold, so the trust mechanism is different:
 **every assertion must trace to a retrieved chunk, and that grounding is checked
-automatically.** Generation is two-pass — extract grounded claims → groundedness gate →
-compose a narrative from the *retained claims only* — never a single free-text call. The
+automatically.** Generation is two-pass - extract grounded claims -> groundedness gate ->
+compose a narrative from the *retained claims only* - never a single free-text call. The
 narrative introduces no fact that is not already a grounded claim.
 
 Output: a structured evidence brief (claims by dimension) + a dossier-style narrative
@@ -32,7 +32,7 @@ from strata_platform.substrate.contracts import (
 )
 from strata_platform.substrate.reasoner import Reasoner
 
-# Policy: partials are kept in the brief (flagged) but excluded from the dossier prose —
+# Policy: partials are kept in the brief (flagged) but excluded from the dossier prose -
 # the narrative rests on fully-supported claims only. One line so it's reviewable.
 NARRATIVE_INCLUDES_PARTIAL = False
 MAX_CLAIMS = 12  # bound the gate's per-claim calls / latency
@@ -61,7 +61,7 @@ def _numbered_evidence(chunks: list[Chunk]) -> str:
 
 
 def _extract_claims(reasoner: Reasoner, chunks: list[Chunk]) -> list[EvidenceClaim]:
-    """PASS 1 — extract grounded claims; drop any claim that cites no chunk (ungrounded at
+    """PASS 1 - extract grounded claims; drop any claim that cites no chunk (ungrounded at
     birth). chunk_indices map back to real chunk_id/source_id provenance."""
     prompt = (f"Retrieved evidence (chunks):\n{_numbered_evidence(chunks)}\n\n"
               "Return the JSON claims object.")
@@ -72,7 +72,7 @@ def _extract_claims(reasoner: Reasoner, chunks: list[Chunk]) -> list[EvidenceCla
         idxs = [i for i in (raw.get("chunk_indices") or []) if isinstance(i, int)
                 and 0 <= i < len(chunks)]
         text = (raw.get("text") or "").strip()
-        if not idxs or not text:           # ungrounded or empty → discarded
+        if not idxs or not text:           # ungrounded or empty -> discarded
             continue
         dim = raw.get("dimension")
         dim = dim if dim in allowed else "other"
@@ -88,8 +88,8 @@ def _extract_claims(reasoner: Reasoner, chunks: list[Chunk]) -> list[EvidenceCla
 
 def _gate(reasoner: Reasoner, claims: list[EvidenceClaim], chunks: list[Chunk]
           ) -> tuple[list[EvidenceClaim], list[EvidenceClaim]]:
-    """GATE — automated groundedness (the trust core). An entailment call per claim against
-    its cited chunk text. UNSUPPORTED → filtered (kept for audit, never shown)."""
+    """GATE - automated groundedness (the trust core). An entailment call per claim against
+    its cited chunk text. UNSUPPORTED -> filtered (kept for audit, never shown)."""
     by_id = {c.chunk_id: c for c in chunks}
     retained: list[EvidenceClaim] = []
     filtered: list[EvidenceClaim] = []
@@ -109,7 +109,7 @@ def _gate(reasoner: Reasoner, claims: list[EvidenceClaim], chunks: list[Chunk]
 
 
 def _compose(reasoner: Reasoner, retained: list[EvidenceClaim]) -> list[NarrativeParagraph]:
-    """PASS 2 — narrative from retained claims ONLY. Partials excluded by policy. Any
+    """PASS 2 - narrative from retained claims ONLY. Partials excluded by policy. Any
     paragraph referencing a claim id not in the retained set is dropped (no invented
     facts)."""
     eligible = [c for c in retained

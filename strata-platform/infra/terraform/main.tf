@@ -1,5 +1,5 @@
 ###############################################################################
-# STRATA IEG platform — Azure infrastructure
+# STRATA IEG platform - Azure infrastructure
 # Topology: Container Apps (API + worker) over Postgres(pgvector) + Blob + Queue,
 # model backend = Azure OpenAI (GPT-5.x), secrets in Key Vault, auth via Entra,
 # all data-plane access via a user-assigned managed identity (no secrets in app).
@@ -15,7 +15,7 @@ resource "random_password" "pg" {
   special = true
 }
 
-# Azure OpenAI custom subdomains are GLOBALLY unique — a plain "strata-openai" can
+# Azure OpenAI custom subdomains are GLOBALLY unique - a plain "strata-openai" can
 # collide. Suffix the account/subdomain to keep applies idempotent across tenants.
 resource "random_string" "suffix" {
   length  = 6
@@ -158,7 +158,7 @@ resource "azurerm_key_vault_secret" "pg_password" {
 
 # Hardened secrets: the app reads these via Container Apps Key Vault references
 # (secretref:), never as inline env values (§0.7). The deployer's own identity needs
-# Key Vault Secrets Officer to write them — granted below.
+# Key Vault Secrets Officer to write them - granted below.
 resource "azurerm_role_assignment" "kv_deployer" {
   scope                = azurerm_key_vault.kv.id
   role_definition_name = "Key Vault Secrets Officer"
@@ -203,7 +203,7 @@ resource "azurerm_key_vault_secret" "openfda_key" {
   depends_on   = [azurerm_role_assignment.kv_deployer]
 }
 
-# Role assignments are eventually consistent — give them time to propagate before the
+# Role assignments are eventually consistent - give them time to propagate before the
 # container apps (which pull from ACR + read Key Vault) start.
 resource "time_sleep" "role_propagation" {
   create_duration = "60s"
@@ -242,7 +242,7 @@ resource "azurerm_cognitive_deployment" "gpt" {
 }
 
 # Embeddings deployment for pgvector retrieval (1536-dim; matches ChunkRow.dim).
-# Serialized after the chat deployment — concurrent deployments on one account can race.
+# Serialized after the chat deployment - concurrent deployments on one account can race.
 resource "azurerm_cognitive_deployment" "embeddings" {
   name                 = var.embeddings_model
   cognitive_account_id = azurerm_cognitive_account.openai.id

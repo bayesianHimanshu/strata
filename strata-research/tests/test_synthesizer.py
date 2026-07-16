@@ -103,7 +103,7 @@ def test_closed_book_is_ungrounded_and_ignores_store() -> None:
     res_empty = EvidenceGapSynthesizer(store=InMemoryStore()).synthesize(
         TARGET, mode="closed"
     )
-    # closed-book emits Predictions only — no grounded Vulnerabilities at all
+    # closed-book emits Predictions only - no grounded Vulnerabilities at all
     assert res_with.vulnerabilities == ()
     assert all(isinstance(p, Prediction) for p in res_with.predictions)
     # and it is independent of store contents (it never retrieves)

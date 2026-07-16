@@ -20,7 +20,7 @@ from strata_platform.substrate.store import InMemoryStore
 
 
 class FakeReasoner:
-    """Scripted three-pass reasoner: extract → gate (per claim) → compose."""
+    """Scripted three-pass reasoner: extract -> gate (per claim) -> compose."""
 
     def __init__(self) -> None:
         self._gate_calls = 0
@@ -34,7 +34,7 @@ class FakeReasoner:
                 {"dimension": "economic", "text": "Cured the disease entirely",
                  "chunk_indices": [0]},
             ]})
-        if "one word" in s:  # gate — first SUPPORTED, second UNSUPPORTED
+        if "one word" in s:  # gate - first SUPPORTED, second UNSUPPORTED
             self._gate_calls += 1
             return "SUPPORTED" if self._gate_calls == 1 else "UNSUPPORTED"
         if "dossier-style evidence narrative" in s:

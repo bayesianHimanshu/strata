@@ -1,8 +1,3 @@
-"""Demo support: a handful of real sample decisions and a corpus-seed endpoint so the
-open-book vs closed-book contrast is live for a showcase. In production the seed is
-replaced by live, leakage-controlled ingestion from public sources (CLAUDE.md steps
-1–2); the rest of the path is identical.
-"""
 from __future__ import annotations
 
 from datetime import date
@@ -28,10 +23,10 @@ SAMPLE_DECISIONS: list[Decision] = [
 ]
 
 # Small, drug-scoped, pre-cutoff evidence so open-book / synthesis has something real to
-# ground on. DEMO STAND-IN ONLY — replaced by live, leakage-controlled ingestion
+# ground on. DEMO STAND-IN ONLY - replaced by live, leakage-controlled ingestion
 # (BUILD_BRIEF §1-2 / the real-time context subsystem). Each drug spans the evidence
 # dimensions (efficacy, comparator, safety, economic, generalizability); snippets are kept
-# deliberately generic/illustrative — they do NOT carry invented clinical numbers that
+# deliberately generic/illustrative - they do NOT carry invented clinical numbers that
 # would read as real citations. Dates sit safely before each decision's leakage cutoff.
 _SEED: dict[str, list[tuple[DocType, str, str]]] = {
     "osimertinib": [

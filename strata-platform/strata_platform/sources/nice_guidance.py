@@ -6,18 +6,18 @@ fetch serves both.
 
 Two halves, deliberately separated:
 
-  * ``parse_guidance(html, ta_id)`` — a PURE function, unit-tested against saved HTML
+  * ``parse_guidance(html, ta_id)`` - a PURE function, unit-tested against saved HTML
     fixtures. Fails loud on a missing published date or an empty rationale: we cannot
     stratify or mine gold from a page we could not read.
 
-  * ``NICEGuidanceClient.fetch(ta_id)`` — the resilient, side-effecting fetch. Browser UA,
+  * ``NICEGuidanceClient.fetch(ta_id)`` - the resilient, side-effecting fetch. Browser UA,
     retry-with-backoff on 5xx, escalate to curl_cffi on 403 (the page may sit behind the
     same WAF as ClinicalTrials.gov), and a typed ``unavailable`` result on 404/withdrawn so
     a single dead TA never crashes the batch. Snapshots are content-addressed; the per-TA
     pointer is the cache: a TA already fetched is served from disk with no network call.
 
 The HTTP itself is injected (``http_get``) so the whole client is testable with no
-network — the default implementation is the only thing that touches httpx/curl_cffi.
+network - the default implementation is the only thing that touches httpx/curl_cffi.
 """
 from __future__ import annotations
 
@@ -48,9 +48,9 @@ def guidance_url(ta_id: str) -> str:
     return f"{NICE_BASE}/guidance/{ta_id.lower()}/chapter/1-recommendations"
 
 
-# --------------------------------------------------------------------------- #
+
 # Pure parsing
-# --------------------------------------------------------------------------- #
+
 
 _SCRIPT_STYLE = re.compile(r"<(script|style)[^>]*>.*?</\1>", re.IGNORECASE | re.DOTALL)
 _TAG = re.compile(r"<[^>]+>")
@@ -92,18 +92,18 @@ class ParsedGuidance(BaseModel):
 
 
 def html_to_text(html: str) -> str:
-    """HTML → text, one line per block element.
+    """HTML -> text, one line per block element.
 
     Block-element boundaries (</p>, headings, list items, <br>, …) become newlines;
-    everything else — including source line-wrapping INSIDE a paragraph — collapses to
+    everything else - including source line-wrapping INSIDE a paragraph - collapses to
     single spaces. A wrapped phrase like "indirect\\ncomparison" must read as "indirect
     comparison" or multi-word rubric cues silently fail to match during gold extraction.
     Block newlines are preserved so section-heading detection works."""
     html = _SCRIPT_STYLE.sub(" ", html)
-    html = _BLOCK_CLOSE.sub("\x00", html)  # block boundaries → sentinel
-    text = unescape(_TAG.sub(" ", html))  # inline tags → space
-    text = re.sub(r"[^\S\x00]+", " ", text)  # all whitespace except sentinel → space
-    text = text.replace("\x00", "\n")  # sentinel → newline
+    html = _BLOCK_CLOSE.sub("\x00", html)  # block boundaries -> sentinel
+    text = unescape(_TAG.sub(" ", html))  # inline tags -> space
+    text = re.sub(r"[^\S\x00]+", " ", text)  # all whitespace except sentinel -> space
+    text = text.replace("\x00", "\n")  # sentinel -> newline
     return "\n".join(ln.strip() for ln in text.split("\n") if ln.strip())
 
 
@@ -187,9 +187,9 @@ def parse_guidance(html: str, ta_id: str) -> ParsedGuidance:
     )
 
 
-# --------------------------------------------------------------------------- #
+
 # Resilient fetch
-# --------------------------------------------------------------------------- #
+
 
 
 class GuidanceResult(BaseModel):
@@ -241,7 +241,7 @@ def _default_cache_dir() -> Path:
 
 
 class NICEGuidanceClient:
-    """Fetch a TA's final guidance → GuidanceResult. Idempotent (cached) + resilient."""
+    """Fetch a TA's final guidance -> GuidanceResult. Idempotent (cached) + resilient."""
 
     def __init__(
         self,
@@ -302,7 +302,7 @@ class NICEGuidanceClient:
             content,
             source="nice",
             source_id=ta,
-            doc_type=DocType.ta_final_guidance,  # gold-bearing → excluded from retrieval
+            doc_type=DocType.ta_final_guidance,  # gold-bearing -> excluded from retrieval
             url=url,
             doc_date=parsed.published_date,
             appraisal_id=ta,

@@ -1,7 +1,7 @@
-"""STRATA — closed-book probe (eval/closed_book_probe.py).
+"""STRATA - closed-book probe (eval/closed_book_probe.py).
 
 The cheapest, highest-information experiment in the project. It runs the synthesizer's
-CLOSED-BOOK control — no retrieval, no dossier, parametric knowledge only — over the
+CLOSED-BOOK control - no retrieval, no dossier, parametric knowledge only - over the
 post-cutoff (leakage-clean) slice, and scores how many committee-cited vulnerability
 CATEGORIES the model recovers from priors alone.
 
@@ -9,7 +9,7 @@ What the numbers mean:
   - closed-book recall on the POST-cutoff slice = the model's genuine parametric
     prior over HTA failure modes (it cannot have trained on these decisions). High
     here means the apparent "HTA Archaeology" skill is largely general knowledge,
-    not decision-specific retrieval — the H-A2 reframing.
+    not decision-specific retrieval - the H-A2 reframing.
   - closed-book recall PRE vs POST = contamination signal. If pre >> post, the model
     memorised specific pre-cutoff decisions (it read the post-hoc write-ups).
   - open − closed (per category, on the clean slice) = the signal attributable to
@@ -36,9 +36,9 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-# --------------------------------------------------------------------------- #
+
 # Seams
-# --------------------------------------------------------------------------- #
+
 
 class Reasoner(Protocol):
     """Matches the injectable seam in agents/synthesizer.py. If the method name
@@ -62,22 +62,22 @@ class ProbeDecision:
 @dataclass(frozen=True)
 class RunConfig:
     model: str                       # the REAL model string you will run on
-    model_cutoff: date               # its training cutoff — defines the clean slice
+    model_cutoff: date               # its training cutoff - defines the clean slice
     temperature: float = 0.0         # 0 for reproducibility (LLMs still not exact)
     max_tokens: int = 1024
 
 
-# --------------------------------------------------------------------------- #
+
 # Prompt (closed-book: parametric only, no context)
-# --------------------------------------------------------------------------- #
+
 
 CLOSED_BOOK_SYSTEM = (
     "You assess health technology appraisals. Using ONLY general knowledge of HTA "
-    "decision-making and the named drug and indication — with NO access to the "
-    "appraisal documents, trial data, or the committee's report — predict which "
+    "decision-making and the named drug and indication - with NO access to the "
+    "appraisal documents, trial data, or the committee's report - predict which "
     "CATEGORIES of evidence vulnerability the committee most likely cited. Stay "
     "strictly within the provided taxonomy. Output strict JSON: a list of category "
-    "ids, nothing else — no prose, no markdown."
+    "ids, nothing else - no prose, no markdown."
 )
 
 
@@ -113,9 +113,9 @@ def predict_closed_book(reasoner: Reasoner, d: ProbeDecision,
     return parse_categories(reply, taxonomy)
 
 
-# --------------------------------------------------------------------------- #
+
 # Scoring (pure)
-# --------------------------------------------------------------------------- #
+
 
 def _per_category_recall(
     decision_ids: list[str],
@@ -162,9 +162,9 @@ def _signed_delta(open_slice: dict, closed_slice: dict, taxonomy: list[str]) -> 
     return out
 
 
-# --------------------------------------------------------------------------- #
-# Run (pure orchestration — no I/O)
-# --------------------------------------------------------------------------- #
+
+# Run (pure orchestration - no I/O)
+
 
 @dataclass
 class ProbeReport:
@@ -253,9 +253,9 @@ def _safe_sub(a, b):
     return None if (a is None or b is None) else round(a - b, 4)
 
 
-# --------------------------------------------------------------------------- #
+
 # Real reasoner (used in your environment; not exercised by the offline tests)
-# --------------------------------------------------------------------------- #
+
 
 class AnthropicReasoner:
     """Calls the Anthropic Messages API. Inject the REAL model you are measuring on;
@@ -290,9 +290,9 @@ class AnthropicReasoner:
         return "".join(b.get("text", "") for b in blocks if b.get("type") == "text")
 
 
-# --------------------------------------------------------------------------- #
+
 # Entrypoint (gates + snapshots; thin, all I/O lives here)
-# --------------------------------------------------------------------------- #
+
 
 def main(
     decisions: list[ProbeDecision],
@@ -307,7 +307,7 @@ def main(
     from core.provenance import snapshot  # type: ignore
     from eval.rubric import assert_rubric_committed, rubric_hash  # type: ignore
 
-    assert_rubric_committed()                            # invariant #6 — no ungated run
+    assert_rubric_committed()                            # invariant #6 - no ungated run
     reasoner = AnthropicReasoner(config)
     report = run_probe(decisions, gold, reasoner, config, taxonomy,
                        open_predictions=open_predictions, rubric_hash=rubric_hash())

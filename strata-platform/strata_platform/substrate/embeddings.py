@@ -1,7 +1,7 @@
 """The embedding seam. Ingestion embeds chunks; pgvector ranks by cosine distance.
 
 ``AzureOpenAIEmbedder`` targets an Azure OpenAI embeddings deployment (e.g.
-``text-embedding-3-small``, 1536-dim) — the production path; auth is api-key OR Entra
+``text-embedding-3-small``, 1536-dim) - the production path; auth is api-key OR Entra
 managed identity, identical to the reasoner. Batches with bounded backoff on 429 (TPM
 quota). ``HashingEmbedder`` is a deterministic, dependency-free offline stand-in (same
 dimensionality) so ingestion and the pgvector query path run locally and in tests with no
@@ -35,7 +35,7 @@ def _l2_normalize(v: list[float]) -> list[float]:
 
 class HashingEmbedder:
     """Deterministic hashing bag-of-words embedding, L2-normalized. Not semantic, but
-    stable and offline — enough to exercise the ingestion + pgvector ranking path and to
+    stable and offline - enough to exercise the ingestion + pgvector ranking path and to
     keep tests free of a live embedding service."""
 
     def __init__(self, dim: int = 1536) -> None:
@@ -88,7 +88,7 @@ class AzureOpenAIEmbedder:
             for attempt in range(max_retries):
                 r = httpx.post(url, headers=self._headers(),
                                json={"input": batch}, timeout=120.0)
-                if r.status_code == 429:  # TPM quota — bounded backoff
+                if r.status_code == 429:  # TPM quota - bounded backoff
                     time.sleep(min(2**attempt, 30))
                     continue
                 r.raise_for_status()

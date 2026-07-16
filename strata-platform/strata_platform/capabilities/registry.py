@@ -1,4 +1,4 @@
-"""Capability registry — the lookup the API and worker use to dispatch a request to the
+"""Capability registry - the lookup the API and worker use to dispatch a request to the
 right agent. Adding a capability is one line here."""
 from __future__ import annotations
 

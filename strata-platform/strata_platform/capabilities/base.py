@@ -32,7 +32,7 @@ def parse_categories(text: str) -> set[VulnCategory]:
 
 def parse_json_object(text: str) -> dict:
     """Tolerant parse of a model's JSON object reply (handles ```json fences). Returns
-    {} on failure rather than raising — the caller decides what an empty extraction means."""
+    {} on failure rather than raising - the caller decides what an empty extraction means."""
     cleaned = re.sub(r"^```(?:json)?|```$", "", (text or "").strip(),
                      flags=re.MULTILINE).strip()
     try:

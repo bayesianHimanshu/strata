@@ -98,7 +98,7 @@ def test_fetch_ok_tags_provenance_and_boundary(tmp_path: Path) -> None:
     assert res.status == "ok"
     assert res.parsed.published_date == date(2026, 1, 15)
     rec = res.source_record
-    assert rec.doc_type == DocType.ta_final_guidance  # gold-bearing → excluded
+    assert rec.doc_type == DocType.ta_final_guidance  # gold-bearing -> excluded
     assert rec.appraisal_id == "TA1000"
     assert rec.doc_date == date(2026, 1, 15)  # exact date flows onto the record
     assert len(calls) == 1
@@ -133,7 +133,7 @@ def test_fetch_block_page_is_unavailable(tmp_path: Path) -> None:
 
 
 def test_fetch_withdrawn_is_graceful_not_fail_loud(tmp_path: Path) -> None:
-    # A replaced TA returns 200 with a notice and no rationale — must be skipped,
+    # A replaced TA returns 200 with a notice and no rationale - must be skipped,
     # not raised (this is the TA963 case that crashed the real batch).
     html = _html("ta_withdrawn.html").encode("utf-8")
     client, _ = _fetcher(tmp_path, {_url("TA963"): (200, html, "text/html")})

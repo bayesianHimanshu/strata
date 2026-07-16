@@ -1,7 +1,7 @@
 """Boundary contracts. Types are the spec (CLAUDE.md).
 
 These Pydantic v2 models are frozen value objects that cross agent boundaries.
-The orchestrator wires agents by passing these — an agent that needs anything not
+The orchestrator wires agents by passing these - an agent that needs anything not
 expressible here is leaking hidden state and should be refactored.
 """
 from __future__ import annotations
@@ -99,7 +99,7 @@ class Claim(BaseModel):
 class Vulnerability(BaseModel):
     """A predicted evidence-base vulnerability (Arm A OPEN-book synthesizer output).
 
-    Carries a grounded Claim — invariant #1 holds by type: an open-book vulnerability
+    Carries a grounded Claim - invariant #1 holds by type: an open-book vulnerability
     that cannot point at a retrieved source span cannot be constructed.
     """
 
@@ -111,7 +111,7 @@ class Vulnerability(BaseModel):
 
 
 class Prediction(BaseModel):
-    """A CLOSED-book (retrieval-disabled) prediction — the parametric-memory control
+    """A CLOSED-book (retrieval-disabled) prediction - the parametric-memory control
     (invariant #3). It carries NO provenance by construction: it is the model's prior,
     not a grounded claim, and exists only to be subtracted from the open-book result
     (open − closed = attributable signal). It must never be surfaced as user-facing
@@ -122,7 +122,7 @@ class Prediction(BaseModel):
 
     category: VulnCategory
     confidence: float = Field(ge=0.0, le=1.0)
-    rationale_text: str = ""  # the model's own words — explicitly ungrounded
+    rationale_text: str = ""  # the model's own words - explicitly ungrounded
 
 
 class Decision(BaseModel):

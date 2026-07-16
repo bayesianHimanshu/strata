@@ -1,4 +1,4 @@
-"""The leakage boundary — the trust-critical core, carried over from STRATA.
+"""The leakage boundary - the trust-critical core, carried over from STRATA.
 
 A retrieval over the store MUST be parameterised by a boundary. The boundary composes a
 date cutoff, dossier-disjointness, a sibling policy, and drug scoping into one predicate;
@@ -9,7 +9,7 @@ a boundary.
   - ``backtest`` (validation): ``as_of = decision_date``, cutoff = as_of − buffer, the
     decision's own dossier and same-drug siblings excluded. This is the experiment.
   - ``live`` (the product): ``as_of = today`` (or a chosen submission date), cutoff = as_of
-    (inclusive), no dossier/sibling exclusion — there is no future decision to leak from.
+    (inclusive), no dossier/sibling exclusion - there is no future decision to leak from.
 
 Same predicate machinery; only the cutoff and the exclusions differ. Build via the
 ``.backtest()`` / ``.live()`` factories; the original keyword construction still works

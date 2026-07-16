@@ -2,7 +2,7 @@
 the package imports with no live database (local boot and tests don't touch Postgres).
 
 The DB-backed paths (provenance ledger, jobs, pgvector retrieval) run synchronously, which
-keeps the capability → job-runner → DB call chain a single coherent thread — easier to
+keeps the capability -> job-runner -> DB call chain a single coherent thread - easier to
 audit than mixing async/await through the capability interface. The Azure deployment uses
 this; local boot uses the in-memory stores.
 """

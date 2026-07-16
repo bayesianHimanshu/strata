@@ -1,25 +1,3 @@
-"""Per-TA NICE guidance fetcher + pure parser (Task 2.2).
-
-The spreadsheet gives the universe at fiscal-year granularity; the per-TA guidance
-page gives the EXACT decision date and the committee rationale (the gold-bearing
-text). One fetch serves both.
-
-Two halves, deliberately separated:
-
-  * `parse_guidance(html, ta_id)` — a PURE function, unit-tested against saved HTML
-    fixtures under tests/fixtures/nice/. Fails loud on a missing published date or an
-    empty rationale: we cannot stratify or mine gold from a page we could not read.
-
-  * `NICEGuidanceClient.fetch(ta_id)` — the resilient, side-effecting fetch. Carries
-    the Phase 0 lessons: browser UA, retry-with-backoff on 5xx, escalate to curl_cffi
-    on 403 (the page may sit behind the same WAF as ClinicalTrials.gov), and a typed
-    `unavailable` result on 404/withdrawn so a single dead TA never crashes the batch.
-    Snapshots are content-addressed and the per-TA pointer is the cache: a TA already
-    fetched is served from disk with no network call.
-
-The HTTP itself is injected (`http_get`) so the whole client is testable with no
-network — the default implementation is the only thing that touches httpx/curl_cffi.
-"""
 from __future__ import annotations
 
 import re
@@ -52,9 +30,9 @@ def guidance_url(ta_id: str) -> str:
     return f"{NICE_BASE}/guidance/{ta_id.lower()}/chapter/1-recommendations"
 
 
-# --------------------------------------------------------------------------- #
+
 # Pure parsing
-# --------------------------------------------------------------------------- #
+
 
 _SCRIPT_STYLE = re.compile(r"<(script|style)[^>]*>.*?</\1>", re.IGNORECASE | re.DOTALL)
 _TAG = re.compile(r"<[^>]+>")
@@ -106,18 +84,18 @@ class ParsedGuidance(BaseModel):
 
 
 def html_to_text(html: str) -> str:
-    """HTML → text, one line per block element.
+    """HTML -> text, one line per block element.
 
     Block-element boundaries (</p>, headings, list items, <br>, …) become newlines;
-    everything else — including source line-wrapping INSIDE a paragraph — collapses to
+    everything else - including source line-wrapping INSIDE a paragraph - collapses to
     single spaces. This matters: a wrapped phrase like "indirect\\ncomparison" must read
     as "indirect comparison" or multi-word rubric cues silently fail to match during
     gold extraction. Block newlines are preserved so section-heading detection works."""
     html = _SCRIPT_STYLE.sub(" ", html)
-    html = _BLOCK_CLOSE.sub("\x00", html)  # block boundaries → sentinel
-    text = unescape(_TAG.sub(" ", html))  # inline tags → space
-    text = re.sub(r"[^\S\x00]+", " ", text)  # all whitespace except sentinel → space
-    text = text.replace("\x00", "\n")  # sentinel → newline
+    html = _BLOCK_CLOSE.sub("\x00", html)  # block boundaries -> sentinel
+    text = unescape(_TAG.sub(" ", html))  # inline tags -> space
+    text = re.sub(r"[^\S\x00]+", " ", text)  # all whitespace except sentinel -> space
+    text = text.replace("\x00", "\n")  # sentinel -> newline
     return "\n".join(ln.strip() for ln in text.split("\n") if ln.strip())
 
 
@@ -205,9 +183,9 @@ def parse_guidance(html: str, ta_id: str) -> ParsedGuidance:
     )
 
 
-# --------------------------------------------------------------------------- #
+
 # Resilient fetch
-# --------------------------------------------------------------------------- #
+
 
 
 class GuidanceResult(BaseModel):
@@ -257,7 +235,7 @@ def _curl_cffi_get(url: str, *, timeout: float = 30.0) -> tuple[int, bytes, str]
 
 
 class NICEGuidanceClient:
-    """Fetch a TA's final guidance → GuidanceResult. Idempotent (cached) + resilient."""
+    """Fetch a TA's final guidance -> GuidanceResult. Idempotent (cached) + resilient."""
 
     def __init__(
         self,
@@ -309,7 +287,7 @@ class NICEGuidanceClient:
             return self._unavailable(ta, "non-HTML body (block page?)")
 
         html_str = content.decode("utf-8", "replace")
-        # Withdrawn/replaced TAs return 200 with a notice and no rationale — skip them
+        # Withdrawn/replaced TAs return 200 with a notice and no rationale - skip them
         # gracefully BEFORE the fail-loud parse, so one dead TA never aborts the batch.
         if is_withdrawn(html_str):
             return self._unavailable(ta, "withdrawn or replaced by newer guidance")
@@ -322,7 +300,7 @@ class NICEGuidanceClient:
             source_id=ta,
             url=url,
             doc_date=parsed.published_date,
-            doc_type=DocType.ta_final_guidance,  # gold-bearing → excluded from retrieval
+            doc_type=DocType.ta_final_guidance,  # gold-bearing -> excluded from retrieval
             appraisal_id=ta,
             root=self._root,
         )

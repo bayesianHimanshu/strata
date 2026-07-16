@@ -1,15 +1,3 @@
-"""Recent-slice reader over the NICE cancer-recommendations spreadsheet (Task 2.1).
-
-The Storyblok xlsx is the *index* of cancer TAs: TA id + fiscal year + technology +
-indication + categorisation, at fiscal-year granularity. This module turns the recent
-slice (FY 2024/25–2026/27, i.e. fiscal_year_start >= cutoff.year - 2) into typed
-`NiceTaRef`s — the work-list the per-TA guidance fetcher resolves to exact dates.
-
-Column detection is value-based where names are unreliable (the "TA ID" header was
-missed by name matching, so the TA column is found by the `TA\\d+` value regex), and
-header-name based with a documented fallback for technology/indication. Pure +
-unit-tested against an in-memory workbook fixture; no network.
-"""
 from __future__ import annotations
 
 import io
@@ -23,7 +11,7 @@ from sources.nice_feasibility import detect_rec_col, detect_year_col, parse_fisc
 _TA_RE = re.compile(r"^\s*TA\d+\s*$", re.IGNORECASE)
 _MIN_COL_HITS = 5
 
-# Documented column layout (1-indexed in the spec → 0-indexed here), used only as a
+# Documented column layout (1-indexed in the spec -> 0-indexed here), used only as a
 # fallback when header-name detection fails: TA(0) Year(1) Technology(3) Indication(5).
 _FALLBACK = {"technology": 3, "indication": 5}
 

@@ -28,7 +28,7 @@ def test_chunks_are_breadcrumb_prefixed_and_section_aware() -> None:
     sections = {c.section_path for c in chunks}
     assert {"Background", "Comparator", "ICER"} <= sections
     comp = next(c for c in chunks if c.section_path == "Comparator")
-    assert comp.text.startswith("[nice:TA1000 › Pembro NSCLC › Comparator]")
+    assert comp.text.startswith("[nice:TA1000 > Pembro NSCLC > Comparator]")
     # span indexes the raw document, not the prefixed text
     assert DOC[comp.span.start : comp.span.end] == comp.raw_text
 

@@ -8,8 +8,8 @@
   --line-strong: #cfd6e0;
 
   /* brand */
-  --brand: #1f4788;         /* MResult deep navy — CTAs, wordmark, headings */
-  --brand-link: #0066cc;    /* bright blue — links / hover */
+  --brand: #1f4788;         /* MResult deep navy - CTAs, wordmark, headings */
+  --brand-link: #0066cc;    /* bright blue - links / hover */
   --accent: #00a8e8;        /* teal/cyan highlight */
 
   /* semantic: meaning is carried by colour (grounded = the brand navy) */
@@ -37,7 +37,7 @@ body {
   font-size: 15px;
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
-  /* MResult navy→teal brand accent strip across the top */
+  /* MResult navy->teal brand accent strip across the top */
   border-top: 3px solid;
   border-image: linear-gradient(90deg, var(--brand) 0%, var(--accent) 100%) 1;
 }

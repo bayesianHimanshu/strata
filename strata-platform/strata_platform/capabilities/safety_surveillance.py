@@ -1,13 +1,13 @@
-"""Safety-Signal Surveillance — ported from VIGIL's signal agent onto the STRATA substrate.
+"""Safety-Signal Surveillance - ported from VIGIL's signal agent onto the STRATA substrate.
 
 Answers aggregate safety questions by generating a read-only SELECT against the
 ``vw_signal_metrics`` disproportionality view, validating it (sql_guard, deny-by-default),
-executing it over FAERS, and summarising the results — grounded only in the returned rows.
+executing it over FAERS, and summarising the results - grounded only in the returned rows.
 FAERS reactions are already MedDRA-coded, so this needs no case-processing pipeline; it is
 inherently live (as-of-now over the loaded FAERS set). Every query is append-only audited
 (the persisted job record carries the exact SQL that produced every number).
 
-PRR/ROR are SCREENING signals from spontaneous, unverified reports — not confirmed causal
+PRR/ROR are SCREENING signals from spontaneous, unverified reports - not confirmed causal
 risks. The caveats always say so.
 """
 from __future__ import annotations
@@ -28,7 +28,7 @@ from strata_platform.substrate.sql_guard import validate_readonly
 
 _VIEW = "vw_signal_metrics"
 _SCREENING_CAVEAT = ("PRR/ROR are screening signals from spontaneous, unverified FAERS "
-                     "reports — not confirmed causal risks. No exposure denominator; "
+                     "reports - not confirmed causal risks. No exposure denominator; "
                      "subject to reporting and confounding bias.")
 
 _SQLGEN_SYSTEM = (
@@ -50,7 +50,7 @@ _NARRATE_SYSTEM = (
 
 
 def run_signal_sql(sql: str) -> list[dict]:  # pragma: no cover - requires live DB
-    """Execute a (guarded) read-only SELECT against Postgres → list of row dicts. Module
+    """Execute a (guarded) read-only SELECT against Postgres -> list of row dicts. Module
     level so tests can monkeypatch it without a database."""
     from sqlalchemy import text
 
@@ -67,13 +67,13 @@ def _default_sql(drug: str | None, limit: int = 25) -> str:
 
 
 def _gen_sql(reasoner: Reasoner, question: str, drug: str | None) -> tuple[str, str | None]:
-    """Model → GeneratedSQL → guarded safe SQL. Returns (safe_sql, reject_reason|None).
+    """Model -> GeneratedSQL -> guarded safe SQL. Returns (safe_sql, reject_reason|None).
     Unsafe SQL is REJECTED and never executed; a safe default runs in its place."""
     user = f"Question: {question}" + (f"\nDrug scope: {drug}" if drug else "")
     raw = parse_json_object(reasoner.complete(user, system=_SQLGEN_SYSTEM))
     try:
         gen = GeneratedSQL.model_validate(raw)
-    except Exception:  # noqa: BLE001 - malformed → fall back to the safe default
+    except Exception:  # noqa: BLE001 - malformed -> fall back to the safe default
         return _default_sql(drug), "model did not return valid GeneratedSQL"
     ok, reason, safe = validate_readonly(gen.sql, {_VIEW})
     if not ok or safe is None:
@@ -95,7 +95,7 @@ def _narrate(reasoner: Reasoner, question: str,
 class SafetySurveillance(Capability):
     key = "safety_surveillance"
     summary = ("Pharmacovigilance disproportionality (PRR/ROR) over FAERS via guarded "
-               "text-to-SQL — screening signals, fully auditable.")
+               "text-to-SQL - screening signals, fully auditable.")
 
     def run(self, request: CapabilityRequest, *, reasoner: Reasoner,
             store) -> CapabilityResult:

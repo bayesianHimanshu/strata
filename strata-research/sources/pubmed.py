@@ -1,9 +1,3 @@
-"""PubMed / NCBI E-utilities client (Arm B literature surveillance).
-
-esearch for ids/counts; efetch for abstracts (the Phase 2 retrieval corpus needs the
-abstract text + a publication date for leakage filtering). Parsers are pure and
-unit-tested against fixture payloads; the network methods are thin wrappers.
-"""
 from __future__ import annotations
 
 from datetime import date
@@ -66,7 +60,7 @@ def _month(raw: str | None) -> int:
 
 
 def _pub_date(pubdate: ET.Element | None) -> date | None:
-    """A PubDate element → date. Handles Year/Month/Day and MedlineDate ('2024 Mar')."""
+    """A PubDate element -> date. Handles Year/Month/Day and MedlineDate ('2024 Mar')."""
     if pubdate is None:
         return None
     year = pubdate.findtext("Year")
@@ -123,7 +117,7 @@ class PubMedClient:
         self, term: str, *, retmax: int = 0, sort: str | None = None
     ) -> tuple[SearchResult, SourceRecord]:
         params = {"db": "pubmed", "term": term, "retmode": "json", "retmax": retmax}
-        if sort:  # e.g. "pub_date" — newest first, for the recency-capped fallback
+        if sort:  # e.g. "pub_date" - newest first, for the recency-capped fallback
             params["sort"] = sort
         resp = self._client.get(f"{PUBMED_BASE}/esearch.fcgi", params=params)
         resp.raise_for_status()
@@ -140,7 +134,7 @@ class PubMedClient:
     def fetch_abstracts(
         self, pmids: list[str]
     ) -> tuple[list[Abstract], SourceRecord]:
-        """efetch the given PMIDs → Abstract records + a content-addressed snapshot."""
+        """efetch the given PMIDs -> Abstract records + a content-addressed snapshot."""
         if not pmids:
             raise ValueError("fetch_abstracts requires at least one PMID")
         resp = self._client.get(

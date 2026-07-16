@@ -1,7 +1,7 @@
 [project]
 name = "strata-platform"
 version = "0.1.0"
-description = "Agentic Integrated Evidence Generation platform — trust substrate + capability agents"
+description = "Agentic Integrated Evidence Generation platform - trust substrate + capability agents"
 requires-python = ">=3.11"
 dependencies = [
     "fastapi>=0.111",

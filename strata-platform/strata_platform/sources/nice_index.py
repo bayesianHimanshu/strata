@@ -2,7 +2,7 @@
 
 The Storyblok xlsx is the *index* of cancer TAs: TA id + fiscal year + technology +
 indication + categorisation, at fiscal-year granularity. This turns the recent slice
-(fiscal_year_start >= cutoff.year - 2) into typed ``NiceTaRef``s — the work-list the
+(fiscal_year_start >= cutoff.year - 2) into typed ``NiceTaRef``s - the work-list the
 per-TA guidance fetcher resolves to exact dates.
 
 Column detection is value-based where names are unreliable (the "TA ID" header is missed
@@ -22,7 +22,7 @@ from strata_platform.sources.nice_feasibility import detect_year_col, parse_fisc
 _TA_RE = re.compile(r"^\s*TA\d+\s*$", re.IGNORECASE)
 _MIN_COL_HITS = 5
 
-# Documented column layout (1-indexed in the spec → 0-indexed here), used only as a
+# Documented column layout (1-indexed in the spec -> 0-indexed here), used only as a
 # fallback when header-name detection fails: TA(0) Year(1) Technology(3) Indication(5).
 _FALLBACK = {"technology": 3, "indication": 5}
 

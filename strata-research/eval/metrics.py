@@ -1,10 +1,3 @@
-"""Scoring against the gold taxonomy + inter-annotator agreement.
-
-Scoring is set overlap on (decision_id, VulnCategory) pairs — the MATCH_RULE frozen
-in rubric.py. Everything here is pure; the synthesizer/orchestrator feed it gold and
-prediction pairs and get back ScoreCards. Pre/post-model-cutoff stratification
-(invariant #4) is a first-class output, not an afterthought.
-"""
 from __future__ import annotations
 
 from collections.abc import Iterable
@@ -82,7 +75,7 @@ def score_stratified(
     cutoff: date,
 ) -> dict[str, ScoreCard]:
     """Score overall and split pre/post model cutoff (invariant #4). Post-cutoff =
-    decision_date strictly after the cutoff — the leakage-clean slice.
+    decision_date strictly after the cutoff - the leakage-clean slice.
 
     A decision_id absent from `decision_date` is conservatively treated as pre-cutoff
     (it cannot be claimed as clean test data without a date).

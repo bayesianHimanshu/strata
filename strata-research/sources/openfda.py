@@ -1,10 +1,3 @@
-"""openFDA client — FAERS adverse events + drug labels (Arm: safety signal).
-
-openFDA returns a `meta.results.total` count and a `results` array. Parsing is split
-out so the count/extraction logic is testable offline. The retrieval corpus also
-needs the label TEXT (indications + warnings) and its effective date for leakage
-filtering — `parse_label_docs` provides that as a pure function.
-"""
 from __future__ import annotations
 
 from datetime import date
@@ -30,7 +23,7 @@ class LabelDoc(BaseModel):
 
     brand: str
     generic: str
-    text: str  # indications + warnings — the retrievable label content
+    text: str  # indications + warnings - the retrievable label content
     effective_date: date | None = None
 
 

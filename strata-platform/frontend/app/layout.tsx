@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "STRATA — Agentic IEG",
+  title: "STRATA - Agentic IEG",
   description: "Auditable, leakage-controlled Integrated Evidence Generation.",
 };
 

@@ -1,13 +1,3 @@
-"""ClinicalTrials.gov API v2 client (Arm B surveillance / landscape input).
-
-No auth, ~50 req/min, cursor pagination, countTotal supported. `parse_study` is a
-pure function over one v2 study object and is unit-tested without the network.
-
-CT.gov sits behind Akamai Bot Manager, which fingerprints the TLS handshake (JA3/JA4)
-and 403s a plain httpx client even with a browser User-Agent. We therefore default to
-a `curl_cffi` session impersonating Chrome — the same fix Phase 0 used. Any client
-exposing `.get(url, params=...)` (incl. httpx) can be injected for tests.
-"""
 from __future__ import annotations
 
 from datetime import date
@@ -41,7 +31,7 @@ class TrialRecord(BaseModel):
 
 def parse_study(study: dict) -> TrialRecord:
     """Extract a typed record from a v2 `studies[i]` object. Tolerant of missing
-    fields — CTGov omits sections freely."""
+    fields - CTGov omits sections freely."""
     ps = study.get("protocolSection", {})
     ident = ps.get("identificationModule", {})
     status = ps.get("statusModule", {})
@@ -83,7 +73,7 @@ class ClinicalTrialsClient:
         """One page of studies. Returns (parsed, provenance snapshot, next token).
 
         `intervention` maps to `query.intr` (the molecule) and `condition` to
-        `query.cond` (the indication) — so the corpus can pull a decision's OWN
+        `query.cond` (the indication) - so the corpus can pull a decision's OWN
         molecule's trials, not a global condition sweep. The snapshot is
         content-addressed over the raw response bytes.
         """

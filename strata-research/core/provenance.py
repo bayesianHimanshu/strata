@@ -1,4 +1,4 @@
-"""Provenance primitives — promoted verbatim-in-spirit from phase0_scan.py.
+"""Provenance primitives - promoted verbatim-in-spirit from phase0_scan.py.
 
 Invariant #1: provenance or it doesn't exist. Every byte ingested becomes a
 SourceRecord; every record is content-addressed so a run is reconstructable from
@@ -94,13 +94,13 @@ def read_snapshot(record: SourceRecord, root: Path = SNAPSHOT_DIR) -> bytes:
 
 
 
-# --------------------------------------------------------------------------- #
+
 # Date normalization. The gate for value-based column detection: NICE date cells
 # arrive from openpyxl as datetime objects, so this must coerce datetime/date,
 # Excel serials, ISO (+trailing time), D/M/Y and M/D/Y (day-first when ambiguous,
-# since NICE is UK), and 'DD Month YYYY' text — and return None for non-dates
+# since NICE is UK), and 'DD Month YYYY' text - and return None for non-dates
 # (e.g. recommendation text), which is what lets detect_date_col find the column.
-# --------------------------------------------------------------------------- #
+
 
 _MONTHS = {m.lower(): i for i, m in enumerate(
     ["January", "February", "March", "April", "May", "June", "July",
@@ -111,7 +111,7 @@ _EXCEL_EPOCH = datetime(1899, 12, 30)  # Excel day-0 (1900 leap bug accounted fo
 def normalize_date(raw):
     """Coerce a spreadsheet/registry date value to datetime.date, or None.
 
-    Returns None for anything that isn't a date (e.g. recommendation text) — that
+    Returns None for anything that isn't a date (e.g. recommendation text) - that
     is what makes value-based column detection work.
     """
     if raw is None:

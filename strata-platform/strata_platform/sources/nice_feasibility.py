@@ -1,8 +1,8 @@
 """NICE fiscal-year helpers (index-slice support for nice_index).
 
 FINDING (research Phase 0): the NICE cancer-recommendations spreadsheet has NO decision
-date — its only temporal field is "Year of Publication" as a UK fiscal year ("YYYY/YY",
-e.g. 2025/26 = Apr 2025–Mar 2026). So this sheet is the INDEX of cancer TAs (universe +
+date - its only temporal field is "Year of Publication" as a UK fiscal year ("YYYY/YY",
+e.g. 2025/26 = Apr 2025-Mar 2026). So this sheet is the INDEX of cancer TAs (universe +
 categorisation + rough year), not the decision record; exact dates and the committee
 rationale come from each per-TA guidance page (see nice_guidance).
 

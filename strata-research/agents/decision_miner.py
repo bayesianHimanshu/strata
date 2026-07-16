@@ -1,15 +1,3 @@
-"""DecisionMiner — the gold path (Phase 2 Task 3).
-
-Consumes a decision's `rationale_raw` (dossier-derived committee text) and emits
-GoldItem candidates mapped to the VulnCategory taxonomy. These are *candidates*: gold
-quality comes from dual blind annotation + adjudication, with Cohen's κ reported
-(eval.metrics.cohen_kappa). DecisionMiner is one annotator-shaped producer; a second
-(human, or an LLM-backed extractor) provides the other vector for κ.
-
-Isolation invariant (#5): this module imports nothing from agents.synthesizer and
-holds no shared mutable state with it. The only shared dependency is the read-only
-pre-registered rubric (eval.rubric), which is a spec, not state.
-"""
 from __future__ import annotations
 
 import re
@@ -70,7 +58,7 @@ class DecisionMiner:
 
     def mine(self, decision: Decision) -> list[GoldItem]:
         """Extract candidate GoldItems from one decision's rationale. Reads ONLY the
-        decision's own dossier text — no retrieval, no synthesizer state."""
+        decision's own dossier text - no retrieval, no synthesizer state."""
         return [
             GoldItem(
                 decision_id=decision.decision_id,

@@ -98,7 +98,7 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
 
 def init_tracing(app) -> None:
     """Best-effort OpenTelemetry FastAPI instrumentation. No-op if the packages or the
-    OTLP endpoint env are absent — so OTel stays an optional dependency."""
+    OTLP endpoint env are absent - so OTel stays an optional dependency."""
     import os
 
     if not os.getenv("OTEL_EXPORTER_OTLP_ENDPOINT"):

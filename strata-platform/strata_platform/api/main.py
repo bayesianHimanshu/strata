@@ -19,7 +19,7 @@ settings = get_settings()
 configure_logging()
 
 app = FastAPI(
-    title="STRATA — Agentic IEG Platform",
+    title="STRATA - Agentic IEG Platform",
     version="0.1.0",
     summary="Trust-substrate IEG platform: provenance, leakage boundary, capability agents.",
 )

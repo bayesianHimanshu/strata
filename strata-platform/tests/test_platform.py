@@ -1,4 +1,4 @@
-"""Platform tests — no Azure, no DB, no network. The boundary tests are the
+"""Platform tests - no Azure, no DB, no network. The boundary tests are the
 trust-critical ones (a leaky query must be unrepresentable)."""
 from __future__ import annotations
 

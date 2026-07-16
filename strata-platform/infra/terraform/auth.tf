@@ -1,5 +1,5 @@
 ###############################################################################
-# Easy Auth (Container Apps built-in Entra) — platform-level token validation in
+# Easy Auth (Container Apps built-in Entra) - platform-level token validation in
 # front of the API and UI. Gated by var.enable_easy_auth (default false) so the
 # demo apply never blocks on Graph app-registration rights. Flip the variable on
 # once the deployer can create an Entra app registration in the tenant:
@@ -22,7 +22,7 @@ resource "azuread_application" "easyauth" {
   sign_in_audience = "AzureADMyOrg"
 
   # Construct redirect URIs from the environment default domain (not the app resources)
-  # so the registration does not depend on the apps — the apps depend on this secret.
+  # so the registration does not depend on the apps - the apps depend on this secret.
   web {
     redirect_uris = [
       "https://${local.prefix}-api.${azurerm_container_app_environment.env.default_domain}/.auth/login/aad/callback",
@@ -54,7 +54,7 @@ locals {
   easyauth_issuer = var.enable_easy_auth ? "https://login.microsoftonline.com/${data.azurerm_client_config.current.tenant_id}/v2.0" : ""
 }
 
-# Attach an authConfig to each app (azapi — azurerm has no native resource). The client
+# Attach an authConfig to each app (azapi - azurerm has no native resource). The client
 # secret is referenced by name; the apps already carry a secret of that name (see below).
 resource "azapi_resource" "api_auth" {
   count     = var.enable_easy_auth ? 1 : 0

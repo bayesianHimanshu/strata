@@ -107,7 +107,7 @@ export default function Landscape() {
         <h1 style={{ fontSize: 30 }}>Endpoint &amp; Comparator Landscape</h1>
         <p>
           For an indication, reconstruct the endpoints and comparators that registered
-          trials have used — to inform trial design before submission. Counts are
+          trials have used - to inform trial design before submission. Counts are
           deterministic from the ClinicalTrials.gov structured fields; the model only
           clusters variant names and flags surrogates. Every entry traces to its NCT ids.
         </p>
@@ -165,7 +165,7 @@ export default function Landscape() {
             <span className="eyebrow">Design implications</span><span className="rule" />
           </div>
           <div className="panel">
-            {res.implications.length === 0 && <span className="empty">—</span>}
+            {res.implications.length === 0 && <span className="empty">-</span>}
             {res.implications.map((im, i) => (
               <div key={i} style={{ marginBottom: 10 }}>
                 <p style={{ margin: "0 0 2px" }}>{im.text}</p>
